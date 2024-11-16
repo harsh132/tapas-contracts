@@ -18,6 +18,7 @@ import "account-abstraction/samples/callback/TokenCallbackHandler.sol";
 contract SmartAccount is BaseAccount, TokenCallbackHandler, EIP712Upgradeable, UUPSUpgradeable {
   using SafeERC20 for IERC20;
   address public owner;
+  address private _factory;
 
   mapping(address => bool) private signers;
   address[] public signersList;
@@ -28,6 +29,11 @@ contract SmartAccount is BaseAccount, TokenCallbackHandler, EIP712Upgradeable, U
 
   modifier onlyOwner() {
     _onlyOwner();
+    _;
+  }
+
+  modifier onlyFactory() {
+    _onlyFactory();
     _;
   }
 
@@ -42,11 +48,16 @@ contract SmartAccount is BaseAccount, TokenCallbackHandler, EIP712Upgradeable, U
   constructor(IEntryPoint anEntryPoint) {
     _entryPoint = anEntryPoint;
     _disableInitializers();
+    _factory = msg.sender;
   }
 
   function _onlyOwner() internal view {
     //directly from EOA owner, or through the account itself (which gets redirected through execute())
     require(msg.sender == owner || msg.sender == address(this), "only owner");
+  }
+
+  function _onlyFactory() internal view {
+    require(msg.sender == _factory, "only factory");
   }
 
   function _onlyTapas() internal view {
@@ -157,6 +168,12 @@ contract SmartAccount is BaseAccount, TokenCallbackHandler, EIP712Upgradeable, U
     require(signers[_signer] == false, "signer already exists");
     signers[_signer] = true;
     signersList.push(_signer);
+  }
+
+  function setInitialSigners(address[] calldata _signers) public onlyFactory {
+    for (uint256 i = 0; i < _signers.length; i++) {
+      _addSigner(_signers[i]);
+    }
   }
 
   function addSigner(address _signer) public onlyOwner {

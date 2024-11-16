@@ -17,7 +17,7 @@ endif
 
 deploy:
 	- forge clean
-	-	forge script --chain ${CHAIN} script/Deploy.s.sol:Deploy --rpc-url ${RPC} --broadcast --verify -vvvv --legacy
+	-	forge script --chain ${CHAIN} script/Deploy.s.sol:Deploy --rpc-url ${RPC} --broadcast --verify -vvvv --legacy --etherscan-api-key ${WORLD_API_KEY}
 
 deploy2:
 	- forge clean

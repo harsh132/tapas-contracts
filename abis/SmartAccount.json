@@ -409,6 +409,19 @@
   },
   {
     "type": "function",
+    "name": "setInitialSigners",
+    "inputs": [
+      {
+        "name": "_signers",
+        "type": "address[]",
+        "internalType": "address[]"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
     "name": "signersList",
     "inputs": [
       {
