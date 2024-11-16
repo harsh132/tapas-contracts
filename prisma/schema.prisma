@@ -19,3 +19,18 @@ model Accounts {
 
   @@index([chain, smartAccount])
 }
+
+model Transaction {
+    id              Int      @id @default(autoincrement())
+    chain           String
+    sender          String
+    receiver        String
+    amount          String
+    amountUSD       String
+    senderTxHash    String
+    receiverTxHash  String
+    signer          String
+    timestamp       String
+
+    @@index([sender, receiver])
+}
