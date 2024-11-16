@@ -4,8 +4,8 @@ const page = async ({
   params,
   searchParams,
 }: {
-  params: Promise<{ slug: string }>;
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  params: Promise<Record<string, string>>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) => {
   const search = await searchParams;
   if (search.redirect) {
