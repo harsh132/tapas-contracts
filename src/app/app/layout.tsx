@@ -32,7 +32,7 @@ export default function RootLayout({
       >
         <Providers>
           <motion.main className="relative mx-auto flex h-[100svh] w-full max-w-[60ch] flex-col gap-4 px-4">
-            <AnimatePresence>{children}</AnimatePresence>
+            <AnimatePresence mode="popLayout">{children}</AnimatePresence>
           </motion.main>
         </Providers>
       </Suspense>

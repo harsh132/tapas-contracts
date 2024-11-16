@@ -1,11 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, Edit2, QrCode, Wifi } from "lucide-react";
-import { Button } from "~/components/ui/button";
-import { Card, CardContent } from "~/components/ui/card";
 import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { Button } from "~/components/ui/button";
 
 const numpadButtons = [
   "1",
@@ -22,19 +21,6 @@ const numpadButtons = [
   "del",
 ];
 
-const AnimatedDigit = ({ digit, index }: { digit: string; index: number }) => (
-  <motion.span
-    key={`${digit}-${index}`}
-    initial={{ y: 20, opacity: 0 }}
-    animate={{ y: 0, opacity: 1 }}
-    exit={{ y: -20, opacity: 0 }}
-    transition={{ duration: 0.2 }}
-    className="inline-block"
-  >
-    {digit}
-  </motion.span>
-);
-
 export default function MerchantPayment() {
   const [amount, setAmount] = useState("");
   const [isConfirmed, setIsConfirmed] = useState(false);
@@ -42,6 +28,8 @@ export default function MerchantPayment() {
 
   const handleNumberClick = (num: string) => {
     if (amount.includes(".") && amount.split(".")[1]?.length === 4) return;
+    if (amount === "0" && num === "0") return;
+
     setAmount((prev) => {
       if (num === "." && prev.includes(".")) return prev;
       if (num === "." && prev === "") return "0.";
@@ -84,15 +72,20 @@ export default function MerchantPayment() {
               <div className=""></div>
             </header>
 
-            <div className="tapas-gradient-text text-center text-6xl font-bold">
-              $&nbsp;
+            <div className="text-center text-6xl font-bold text-orange-500">
+              <span className="text-foreground/15">$&nbsp;</span>
               <AnimatePresence mode="popLayout">
                 {formattedAmount.split("").map((digit, index) => (
-                  <AnimatedDigit
+                  <motion.span
                     key={`${digit}-${index}`}
-                    digit={digit}
-                    index={index}
-                  />
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: 20, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="inline-block"
+                  >
+                    {digit}
+                  </motion.span>
                 ))}
               </AnimatePresence>
             </div>
@@ -140,15 +133,20 @@ export default function MerchantPayment() {
               </Button>
             </header>
 
-            <div className="tapas-gradient-text text-center text-6xl font-bold">
-              $&nbsp;
+            <div className="text-center text-6xl font-bold text-orange-500">
+              <span className="text-foreground/15">$&nbsp;</span>
               <AnimatePresence mode="popLayout">
                 {formattedAmount.split("").map((digit, index) => (
-                  <AnimatedDigit
+                  <motion.span
                     key={`${digit}-${index}`}
-                    digit={digit}
-                    index={index}
-                  />
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -20, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="inline-block"
+                  >
+                    {digit}
+                  </motion.span>
                 ))}
               </AnimatePresence>
             </div>
