@@ -9,34 +9,27 @@ import {
 } from "react";
 import { MiniKit } from "@worldcoin/minikit-js";
 import { env } from "~/env";
+import dynamic from "next/dynamic";
 
 export const MiniKitContext = createContext<{
   isMiniKitSuccess: boolean;
-  miniKit: typeof MiniKit | undefined;
 }>({
   isMiniKitSuccess: false,
-  miniKit: undefined,
 });
 
 export default function MiniKitProvider({ children }: { children: ReactNode }) {
   const [isMiniKitSuccess, setIsMiniKitSuccess] = useState(false);
-  const [miniKit, setMiniKit] = useState<typeof MiniKit>();
 
   useEffect(() => {
-    setMiniKit(new MiniKit());
-  }, []);
-
-  useEffect(() => {
-    if (!miniKit) return;
     // Passing appId in the install is optional
     // but allows you to access it later via `window.MiniKit.appId`
 
-    miniKit.install(env.NEXT_PUBLIC_WORLD_APP_ID);
-    setIsMiniKitSuccess(miniKit.isInstalled(true));
-  }, [miniKit]);
+    MiniKit.install(env.NEXT_PUBLIC_WORLD_APP_ID);
+    setIsMiniKitSuccess(MiniKit.isInstalled(true));
+  }, [MiniKit]);
 
   return (
-    <MiniKitContext.Provider value={{ isMiniKitSuccess, miniKit }}>
+    <MiniKitContext.Provider value={{ isMiniKitSuccess }}>
       {children}
     </MiniKitContext.Provider>
   );

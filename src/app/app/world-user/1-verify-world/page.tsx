@@ -4,14 +4,14 @@ import { Button } from "~/components/ui/button";
 
 import { shortenAddress } from "~/lib/utils";
 import { useMiniKitContext } from "~/components/minikit-provider";
+import { MiniKit } from "@worldcoin/minikit-js";
 
 const VerifyWorld = () => {
   const [success, setSuccess] = useState(false);
-  const { isMiniKitSuccess, miniKit } = useMiniKitContext();
+  const { isMiniKitSuccess } = useMiniKitContext();
   const [walletAddress, setWalletAddress] = useState("");
   const signInWithWallet = async () => {
-    if (!miniKit) return;
-    if (window && isMiniKitSuccess && !miniKit?.isInstalled()) {
+    if (window && isMiniKitSuccess && !MiniKit?.isInstalled()) {
       window?.alert("Minikit not installed");
       return;
     }
@@ -20,7 +20,7 @@ const VerifyWorld = () => {
     const { nonce } = await res.json();
 
     const { commandPayload: generateMessageResult, finalPayload } =
-      await miniKit.commandsAsync.walletAuth({
+      await MiniKit.commandsAsync.walletAuth({
         nonce: nonce,
         requestId: "0", // Optional
         expirationTime: new Date(
@@ -56,7 +56,7 @@ const VerifyWorld = () => {
 
       if (data.status === "success") {
         setSuccess(true);
-        const walletAddress = miniKit.walletAddress;
+        const walletAddress = MiniKit.walletAddress;
         setWalletAddress(walletAddress!);
       }
     }
@@ -67,7 +67,7 @@ const VerifyWorld = () => {
       <div className="header text-background">
         <h1 className="tapas-gradient-text pt-16 text-center text-4xl font-bold">
           Verify your world ID -{String(isMiniKitSuccess)}
-          {String(miniKit?.isInstalled())}
+          {String(MiniKit?.isInstalled())}
         </h1>
       </div>
 
