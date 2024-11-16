@@ -14,6 +14,9 @@ export default function HomePage() {
   async function testHalo() {
     const digest = "51605c863fc00650aa9965d4bd8b2838a9ff116fe6ae680da18d869cf7281f29";
 
+    const info = await halo.getKeys();
+    setLogs((prevLogs) => [...prevLogs, JSON.stringify(info, null, 2)]);
+
     void halo.signDigest(digest).then((response) => {
       setLogs((prevLogs) => [...prevLogs, JSON.stringify(response, null, 2)]);
       void viem.recoverAddress({
@@ -37,7 +40,9 @@ export default function HomePage() {
       <br />
       <button onClick={testHalo} style={{ backgroundColor: "gray" }}>Test Halo</button>
       <br /><br /><br />
-      <div>{JSON.stringify(logs, null, 2)}</div>
+      <div>{logs.map((l, i) => {
+        return <p key={i}>{l} <br /></p>
+      })}</div>
     </main>
   );
 }
