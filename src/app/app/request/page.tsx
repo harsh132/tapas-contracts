@@ -1,16 +1,21 @@
 "use client";
 
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, Edit2, QrCode, Wifi } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import { numpadButtons } from "~/lib/constants";
+import * as halo from "src/lib/halo";
+import { useUtapiaStore } from "~/components/utapia-provider";
 
 export default function MerchantPayment() {
   const [amount, setAmount] = useState("");
   const [isConfirmed, setIsConfirmed] = useState(false);
   const router = useRouter();
+  const mode = useUtapiaStore((s) => s.mode);
+  const utapiaAddress = useUtapiaStore((s) => s.utapiaAddress);
 
   const handleNumberClick = (num: string) => {
     if (amount.includes(".") && amount.split(".")[1]?.length === 4) return;
@@ -36,6 +41,50 @@ export default function MerchantPayment() {
   const handleEdit = () => {
     setIsConfirmed(false);
   };
+
+  const { data: nfcPerms, isLoading: isNfcPermsLoading } = useQuery({
+    queryKey: ["nfc perms"],
+    queryFn: async () => await halo.checkPermission().then(() => true),
+  });
+
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["tap nfc"],
+    mutationFn: async () => {
+      const nfcAddress = await halo.getKey();
+      if (!nfcAddress) {
+        throw new Error("Could not scan the NFC");
+      }
+
+      const res = await fetch("/api/recieve", {
+        body: JSON.stringify({
+          chain: mode === "world" ? "480" : "8453",
+          receiver: nfcAddress,
+          // world usdc
+          token: "0x79a02482a880bce3f13e09da970dc34db4cd24d1",
+          usdAmount: amount,
+          sender: utapiaAddress,
+        }),
+      });
+
+      const { hash } = (await res.json()) as { status: string; hash: string };
+
+      const signature = await halo.signDigest(hash);
+
+      await fetch("/api/submit", {
+        body: JSON.stringify({
+          chain: mode === "world" ? "480" : "8453",
+          receiver: nfcAddress,
+          // world usdc
+          token: "0x79a02482a880bce3f13e09da970dc34db4cd24d1",
+          usdAmount: amount,
+          sender: utapiaAddress,
+          signature,
+        }),
+      });
+
+      return signature;
+    },
+  });
 
   const formattedAmount = amount || "0.00";
 
@@ -137,9 +186,12 @@ export default function MerchantPayment() {
               <QrCode className="h-32 w-32" />
             </div>
 
-            <Button className="mb-4 mt-auto h-16 w-full text-xl">
+            <Button
+              className="mb-4 mt-auto h-16 w-full text-xl"
+              onClick={() => mutate()}
+            >
               <Wifi className="mr-2 h-10 w-10 rotate-180" />
-              Scan NFC to Accept Payment
+              {isPending ? "Scanning NFCs" : "Scan NFC to Accept Payment"}
             </Button>
           </>
         )}

@@ -7,6 +7,7 @@ import QrScanner from "qr-scanner";
 import { useEffect, useRef, useState } from "react";
 import ConfirmationScreen from "~/components/tx-receipt";
 import { Button } from "~/components/ui/button";
+import { useUtapiaStore } from "~/components/utapia-provider";
 
 export default function PayPage() {
   const [isScanning, setIsScanning] = useState(false);
@@ -16,6 +17,8 @@ export default function PayPage() {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
+
+  const mode = useUtapiaStore((s) => s.mode);
 
   useEffect(() => {
     const amount = searchParams.get("amount");
@@ -147,7 +150,7 @@ export default function PayPage() {
           <div className="absolute left-[-2px] top-[-2px] z-[0] m-1 h-[calc(100%_-_4px)] w-[calc(100%_-_4px)] rounded-[calc(1.5rem_-_2px)] bg-background/50"></div>
 
           <div className="absolute left-[-2px] top-[-2px] z-[0] m-1 flex h-[calc(100%_-_4px)] w-[calc(100%_-_4px)] items-center justify-center overflow-hidden rounded-[calc(1.5rem_-_2px)] bg-background/50">
-            {isScanning && cameraOpen ? (
+            {isScanning && cameraOpen && mode === "external" ? (
               <video
                 ref={videoRef}
                 autoPlay
@@ -163,9 +166,14 @@ export default function PayPage() {
         <Button
           className="mt-auto flex h-24 flex-col items-center justify-center text-xl"
           onClick={handleTap}
+          disabled={mode === "world"}
         >
           <Wifi className="h-12 w-12" />
-          Tap to Pay
+          <span>
+            {mode === "external"
+              ? "Tap to Pay"
+              : "You can not pay with World Mini-App"}
+          </span>
         </Button>
 
         {/* <Button
