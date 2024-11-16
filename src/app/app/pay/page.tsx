@@ -5,8 +5,8 @@ import { ArrowLeft, Wifi } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import QrScanner from "qr-scanner";
 import { useEffect, useRef, useState } from "react";
+import ConfirmationScreen from "~/components/tx-receipt";
 import { Button } from "~/components/ui/button";
-import ConfirmationScreen from "../tx/page";
 
 export default function PayPage() {
   const [isScanning, setIsScanning] = useState(false);
