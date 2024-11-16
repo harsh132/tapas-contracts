@@ -1,33 +1,33 @@
 "use client";
 import { useEffect, useState } from "react";
-import * as halo from "@arx-research/libhalo/api/web";
-import { set } from "zod";
+import * as halo from "src/lib/halo";
+import * as viem from "viem";
 
 export default function HomePage() {
   const [nfcPermission, setNfcPermission] = useState(false);
-  const [logs, setLogs] = useState("");
+  const [logs, setLogs] = useState<string[]>([]);
 
   async function checkWebNFCPermission() {
-    await halo.haloCheckWebNFCPermission().then(() => setNfcPermission(true));
+    await halo.checkPermission().then(() => setNfcPermission(true));
   }
 
   async function testHalo() {
-    const command = {
-      name: "sign",
-      keyNo: 1,
-      // message: "010203",
-      digest: "51605c863fc00650aa9965d4bd8b2838a9ff116fe6ae680da18d869cf7281f29"
-      /* uncomment the line below if you get an error about setting "command.legacySignCommand = true" */
-      // legacySignCommand: true,
-    };
+    const digest = "51605c863fc00650aa9965d4bd8b2838a9ff116fe6ae680da18d869cf7281f29";
 
-    void halo.execHaloCmdWeb(command).then((response) => {
-      setLogs(JSON.stringify(response, null, 2));
+    void halo.signDigest(digest).then((response) => {
+      setLogs((prevLogs) => [...prevLogs, JSON.stringify(response, null, 2)]);
+      void viem.recoverAddress({
+        hash: "0x51605c863fc00650aa9965d4bd8b2838a9ff116fe6ae680da18d869cf7281f29",
+        signature: response.signature.ether
+      }).then((address) => {
+        const log = JSON.stringify({ recoverdAddress: address }, null, 2);
+        setLogs((prevLogs) => [...prevLogs, log]);
+      });
     });
   }
 
   useEffect(() => {
-    // void checkWebNFCPermission();
+    void checkWebNFCPermission();
   }, []);
 
   return (
@@ -37,7 +37,7 @@ export default function HomePage() {
       <br />
       <button onClick={testHalo} style={{ backgroundColor: "gray" }}>Test Halo</button>
       <br /><br /><br />
-      <div>{logs}</div>
+      <div>{JSON.stringify(logs, null, 2)}</div>
     </main>
   );
 }

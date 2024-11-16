@@ -12,17 +12,3 @@ export function urlBase64ToUint8Array(base64String: string) {
     .replace(/_/g, "/");
   return Buffer.from(base64, "base64");
 }
-
-// async function hardwareSign() {
-//   const command = {
-//     name: "sign",
-//     keyNo: 1,
-//     message: "010203",
-//     /* uncomment the line below if you get an error about setting "command.legacySignCommand = true" */
-//     // legacySignCommand: true,
-//   };
-
-//   void halo.execHaloCmdWeb(command).then((response) => {
-//     setLogs(JSON.stringify(response, null, 2));
-//   });
-// }
