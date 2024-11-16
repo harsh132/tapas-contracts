@@ -23,6 +23,7 @@ const config = {
         fixStyle: "inline-type-imports",
       },
     ],
+    "@next/next/no-img-element": "off",
     "@typescript-eslint/no-unused-vars": [
       "warn",
       {
