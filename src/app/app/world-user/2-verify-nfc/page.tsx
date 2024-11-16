@@ -48,7 +48,7 @@ const VerifyNFC = () => {
 
       await fetch("/api/deployer", {
         body: JSON.stringify({
-          chain: 480,
+          chain: 4801,
           owner: ownerAddr,
           signers: [nfcAddress],
         }),

@@ -57,7 +57,7 @@ export default function MerchantPayment() {
 
       const res = await fetch("/api/recieve", {
         body: JSON.stringify({
-          chain: mode === "world" ? "480" : "8453",
+          chain: mode === "world" ? "4801" : "84532",
           receiver: nfcAddress,
           // world usdc
           token: "0x79a02482a880bce3f13e09da970dc34db4cd24d1",
@@ -72,7 +72,7 @@ export default function MerchantPayment() {
 
       await fetch("/api/submit", {
         body: JSON.stringify({
-          chain: mode === "world" ? "480" : "8453",
+          chain: mode === "world" ? "4801" : "84532",
           receiver: nfcAddress,
           // world usdc
           token: "0x79a02482a880bce3f13e09da970dc34db4cd24d1",

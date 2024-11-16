@@ -142,7 +142,7 @@ const HomePage = () => {
       <div className="mb-6">
         <h2 className="mb-4 text-xl font-bold">Balances</h2>
         <div className="space-y-4">
-          {Object.values(TOKENS[mode === "world" ? 480 : 8453] ?? {}).map(
+          {Object.values(TOKENS[mode === "world" ? 4801 : 84532] ?? {}).map(
             (token) => (
               <div
                 className="flex items-center justify-between"
