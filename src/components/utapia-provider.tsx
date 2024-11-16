@@ -7,22 +7,22 @@ export const useUtapiaStore = create(
     combine(
       {
         utapiaAddress: undefined as undefined | string,
-        worldAddress: undefined as undefined | string,
+        ownerAddress: undefined as undefined | string,
         mode: undefined as "world" | "external" | undefined,
       },
       (set) => ({
         setUtapiaAddress: (utapiaAddress: string) => {
           set({ utapiaAddress });
         },
-        setWorldAddress: (worldAddress: string) => {
-          set({ worldAddress });
+        setWorldAddress: (ownerAddress: string) => {
+          set({ ownerAddress });
         },
         setMode: (mode: "world" | "external" | undefined) => {
           set({ mode });
         },
         reset: () => {
           set({
-            worldAddress: undefined,
+            ownerAddress: undefined,
             utapiaAddress: undefined,
             mode: undefined,
           });

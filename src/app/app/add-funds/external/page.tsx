@@ -1,10 +1,4 @@
 "use client";
-import {
-  MiniKit,
-  PayCommandInput,
-  Tokens,
-  tokenToDecimals,
-} from "@worldcoin/minikit-js";
 
 import { useMutation } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";

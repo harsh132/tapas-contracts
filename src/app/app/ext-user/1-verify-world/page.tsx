@@ -1,15 +1,13 @@
 "use client";
-import React, { useState } from "react";
-import { Button } from "~/components/ui/button";
-import { useMiniKitContext } from "~/components/minikit-provider";
+import { useMutation } from "@tanstack/react-query";
 import { MiniKit } from "@worldcoin/minikit-js";
-import { useUtapiaStore } from "~/components/utapia-provider";
+import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 import { useLocalStorage } from "usehooks-ts";
-import { motion } from "framer-motion";
+import { useMiniKitContext } from "~/components/minikit-provider";
+import { Button } from "~/components/ui/button";
+import { useUtapiaStore } from "~/components/utapia-provider";
 import { appComponentVariants, pageVariants } from "../../motion-pages";
-import { useTransitionState } from "next-transition-router";
-import { useMutation, useQuery } from "@tanstack/react-query";
 
 const VerifyWorld = () => {
   const [_, setTapInProgress] = useLocalStorage("progress", false);

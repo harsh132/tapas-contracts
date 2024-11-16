@@ -30,11 +30,11 @@ const transactions = [
 const HomePage = () => {
   const chainBalances = useTokenBalanceStore((s) => s.chainBalances);
   const mode = useUtapiaStore((s) => s.mode);
-  const worldAddress = useUtapiaStore((s) => s.worldAddress);
+  const ownerAddress = useUtapiaStore((s) => s.ownerAddress);
   const utapiaAddress = useUtapiaStore((s) => s.utapiaAddress);
 
   const { data: ensName } = useEnsName({
-    address: worldAddress as `0x`,
+    address: ownerAddress as `0x`,
   });
 
   const router = useRouter();
@@ -71,7 +71,14 @@ const HomePage = () => {
 
             <div className="ml-auto"></div>
 
-            <Button className="" onClick={() => router.push("/add-funds")}>
+            <Button
+              className=""
+              onClick={() =>
+                mode === "world"
+                  ? router.push("/add-funds/world")
+                  : router.push("/add-funds/external")
+              }
+            >
               Add Funds <Plus className="h-5 w-5" />
             </Button>
           </div>
@@ -100,7 +107,7 @@ const HomePage = () => {
           </div>
 
           {/* <div className="">{shortenAddress(utapiaAddress)}</div>
-          <div className="">{shortenAddress(worldAddress)}</div> */}
+          <div className="">{shortenAddress(ownerAddress)}</div> */}
         </CardContent>
       </Card>
 
