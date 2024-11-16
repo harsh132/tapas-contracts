@@ -1,0 +1,3 @@
+[submodule "utapia-contracts"]
+	path = utapia-contracts
+	url = https://github.com/harsh132/utapia-contracts
