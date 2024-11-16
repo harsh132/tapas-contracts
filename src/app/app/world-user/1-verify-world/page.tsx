@@ -16,7 +16,7 @@ const VerifyWorld = () => {
   const { isMiniKitSuccess } = useMiniKitContext();
 
   const ownerAddress = useUtapiaStore((s) => s.ownerAddress);
-  const setWorldAddress = useUtapiaStore((s) => s.setWorldAddress);
+  const setOwnerAddress = useUtapiaStore((s) => s.setOwnerAddress);
 
   const {
     mutate: signInWithWorld,
@@ -69,7 +69,7 @@ const VerifyWorld = () => {
 
         if (data.status === "success") {
           const walletAddress = MiniKit.walletAddress;
-          setWorldAddress(walletAddress!);
+          setOwnerAddress(walletAddress!);
 
           return true;
         }

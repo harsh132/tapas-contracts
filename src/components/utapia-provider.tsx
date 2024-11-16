@@ -14,7 +14,7 @@ export const useUtapiaStore = create(
         setUtapiaAddress: (utapiaAddress: string) => {
           set({ utapiaAddress });
         },
-        setWorldAddress: (ownerAddress: string) => {
+        setOwnerAddress: (ownerAddress: string) => {
           set({ ownerAddress });
         },
         setMode: (mode: "world" | "external" | undefined) => {
