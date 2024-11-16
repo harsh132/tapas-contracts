@@ -88,9 +88,13 @@ const VerifyWorld = () => {
           Verify your world ID
         </h1>
 
-        <p className="mt-8 text-center">
-          Utapia is hungry for your world id 😋
+        <p className="mb-12 mt-8 text-center">
+          Utapia is hungry for your world id
         </p>
+
+        <div className="flex w-full justify-center">
+          <img className="h-32 w-32 rounded-lg" src="/faces/wink.svg" alt="" />
+        </div>
 
         {!!worldAddress && (
           <div className="mt-16 flex w-full justify-center gap-4 text-xl text-green-500">

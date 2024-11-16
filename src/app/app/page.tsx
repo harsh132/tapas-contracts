@@ -8,7 +8,7 @@ import { useUtapiaStore } from "~/components/utapia-provider";
 import { Button } from "~/components/ui/button";
 import { motion } from "framer-motion";
 import { appComponentVariants, pageVariants } from "./motion-pages";
-import { useTransitionState } from "next-transition-router";
+import Marquee from "~/components/marquee";
 
 export default function HomePage() {
   const utapiaAddress = useUtapiaStore((state) => state.utapiaAddress);
@@ -41,6 +41,10 @@ export default function HomePage() {
           Tap to Pay with crypto. (Satoshi is proud)
         </h2>
       </motion.div>
+
+      <div className="mt-32"></div>
+      <Marquee direction="reverse" />
+      <Marquee direction="forwards" />
 
       <motion.div
         variants={appComponentVariants}

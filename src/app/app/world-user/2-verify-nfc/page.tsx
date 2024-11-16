@@ -84,6 +84,10 @@ const VerifyNFC = () => {
             : nfcError
               ? "Uh oh, couldn't read your band! Please try again."
               : null}
+
+        <div className="flex w-full justify-center">
+          <img className="h-32 w-32 rounded-lg" src="/faces/grin.svg" alt="" />
+        </div>
       </motion.div>
 
       <motion.div

@@ -5,21 +5,7 @@ import { ArrowLeft, Edit2, QrCode, Wifi } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
-
-const numpadButtons = [
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
-  ".",
-  "0",
-  "del",
-];
+import { numpadButtons } from "~/lib/constants";
 
 export default function MerchantPayment() {
   const [amount, setAmount] = useState("");
@@ -51,10 +37,6 @@ export default function MerchantPayment() {
     setIsConfirmed(false);
   };
 
-  const handleBack = () => {
-    router.back();
-  };
-
   const formattedAmount = amount || "0.00";
 
   return (
@@ -63,7 +45,7 @@ export default function MerchantPayment() {
         {!isConfirmed ? (
           <>
             <header className="relative grid grid-cols-[3rem_auto_3rem] items-center">
-              <Button variant="ghost" size="icon" onClick={handleBack}>
+              <Button variant="ghost" size="icon" onClick={() => router.back()}>
                 <ArrowLeft className="h-6 w-6" />
               </Button>
               <h1 className="text-center text-xl font-bold leading-none">
