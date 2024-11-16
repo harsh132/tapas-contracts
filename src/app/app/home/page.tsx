@@ -1,7 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { motion } from "framer-motion";
-import { ArrowDown, ArrowUp, ArrowUpDown, Plus, Share2 } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowUp,
+  ArrowUpDown,
+  Plus,
+  Share2,
+  Trash2,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 import { useEnsName } from "wagmi";
@@ -21,7 +28,7 @@ const HomePage = () => {
   const mode = useUtapiaStore((s) => s.mode);
   const ownerAddress = useUtapiaStore((s) => s.ownerAddress);
   const utapiaAddress = useUtapiaStore((s) => s.utapiaAddress);
-
+  const reset = useUtapiaStore((s) => s.reset);
   const { data: ensName } = useEnsName({
     address: ownerAddress as `0x`,
   });
@@ -261,6 +268,11 @@ const HomePage = () => {
           Request <ArrowDown className="h-5 w-5" />
         </Button>
       </div>
+
+      <Button className="mt-64" variant="destructive" onClick={reset}>
+        <Trash2 />
+        Reset
+      </Button>
     </motion.div>
   );
 };
