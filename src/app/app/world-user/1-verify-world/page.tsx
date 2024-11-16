@@ -122,7 +122,7 @@ const VerifyWorld = () => {
             onClick={() => {
               setTapInProgress(true);
               window.open(
-                `https://redirect-utapia-world.vercel.app/redirect?redirect=${encodeURIComponent(window.origin + `/app/world-user/2-verify-nfc`)}`,
+                `https://redirect-utapia-world.vercel.app/redirect?redirect=${encodeURIComponent(window.origin + `/app/world-user/2-verify-nfc?ownerAddr=${ownerAddress}`)}`,
                 "_system",
               );
             }}
