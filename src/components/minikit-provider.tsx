@@ -12,24 +12,31 @@ import { env } from "~/env";
 
 export const MiniKitContext = createContext<{
   isMiniKitSuccess: boolean;
-  miniKitSDK: typeof MiniKit;
+  miniKit: typeof MiniKit | undefined;
 }>({
   isMiniKitSuccess: false,
-  miniKitSDK: MiniKit,
+  miniKit: undefined,
 });
 
 export default function MiniKitProvider({ children }: { children: ReactNode }) {
   const [isMiniKitSuccess, setIsMiniKitSuccess] = useState(false);
+  const [miniKit, setMiniKit] = useState<typeof MiniKit>();
 
   useEffect(() => {
-    // Passing appId in the install is optional
-    // but allows you to access it later via `window.MiniKit.appId`
-    MiniKit.install(env.NEXT_PUBLIC_WORLD_APP_ID);
-    setIsMiniKitSuccess(MiniKit.isInstalled(true));
+    setMiniKit(MiniKit);
   }, []);
 
+  useEffect(() => {
+    if (!miniKit) return;
+    // Passing appId in the install is optional
+    // but allows you to access it later via `window.MiniKit.appId`
+
+    miniKit.install(env.NEXT_PUBLIC_WORLD_APP_ID);
+    setIsMiniKitSuccess(miniKit.isInstalled(true));
+  }, [miniKit]);
+
   return (
-    <MiniKitContext.Provider value={{ isMiniKitSuccess, miniKitSDK: MiniKit }}>
+    <MiniKitContext.Provider value={{ isMiniKitSuccess, miniKit }}>
       {children}
     </MiniKitContext.Provider>
   );

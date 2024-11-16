@@ -3,8 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { type ReactNode, useState } from "react";
 import { type State, WagmiProvider } from "wagmi";
 import { getConfig } from "~/lib/constants/wagmiConfig";
-import { ErudaProvider } from "./eruda";
-import MiniKitProvider, { MiniKitContext } from "./minikit-provider";
+import MiniKitProvider from "./minikit-provider";
 
 export function AppProviders(props: {
   children: ReactNode;
