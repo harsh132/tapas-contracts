@@ -1,8 +1,10 @@
+import "@coinbase/onchainkit/styles.css";
 import "~/styles/globals.css";
 import { Space_Grotesk } from "next/font/google";
 import { type Metadata } from "next";
 import Footer from "~/components/footer";
 import { ThemeProvider } from "~/components/theme-provider";
+import AppProviders from "~/components/providers";
 
 const poppins = Space_Grotesk({
   subsets: ["latin"],
@@ -29,9 +31,11 @@ export default function RootLayout({
           defaultTheme="light"
           disableTransitionOnChange
         >
-          {children}
+          <AppProviders>
+            {children}
 
-          <Footer />
+            <Footer />
+          </AppProviders>
         </ThemeProvider>
       </body>
     </html>
