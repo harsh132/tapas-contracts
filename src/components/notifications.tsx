@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 
 import { subscribeUser, unsubscribeUser, sendNotification } from "~/actions";
 import { urlBase64ToUint8Array } from "~/lib/utils";
+import { Button } from "./ui/button";
+import { env } from "~/env";
 
 export function PushNotificationManager() {
   const [isSupported, setIsSupported] = useState(false);
@@ -31,7 +33,7 @@ export function PushNotificationManager() {
     const sub = await registration.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: urlBase64ToUint8Array(
-        process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
+        env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
       ),
     });
     setSubscription(sub);
@@ -61,19 +63,19 @@ export function PushNotificationManager() {
       {subscription ? (
         <>
           <p>You are subscribed to push notifications.</p>
-          <button onClick={unsubscribeFromPush}>Unsubscribe</button>
+          <Button onClick={unsubscribeFromPush}>Unsubscribe</Button>
           <input
             type="text"
             placeholder="Enter notification message"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
-          <button onClick={sendTestNotification}>Send Test</button>
+          <Button onClick={sendTestNotification}>Send Test</Button>
         </>
       ) : (
         <>
           <p>You are not subscribed to push notifications.</p>
-          <button onClick={subscribeToPush}>Subscribe</button>
+          <Button onClick={subscribeToPush}>Subscribe</Button>
         </>
       )}
     </div>
