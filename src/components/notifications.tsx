@@ -38,7 +38,7 @@ export function PushNotificationManager() {
       ),
     });
     setSubscription(sub);
-    await subscribeUser(sub);
+    await subscribeUser(JSON.stringify(sub));
   }
 
   async function unsubscribeFromPush() {
