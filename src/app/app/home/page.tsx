@@ -163,7 +163,7 @@ const HomePage = () => {
 
         <Button
           className="h-16 bg-green-200 text-lg text-foreground hover:bg-green-400"
-          onClick={() => router.push("/request")}
+          onClick={() => router.push("/app/request")}
         >
           Request <ArrowDown className="h-5 w-5" />
         </Button>
