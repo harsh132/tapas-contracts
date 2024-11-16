@@ -58,24 +58,24 @@
     --chart-5: 340 75% 55%;
   }
 
-  .tapas-gradient {
+  .utapia-gradient {
     background: var(
-      --tapas-gradient,
+      --utapia-gradient,
       linear-gradient(137deg, #ffcb64 -0.96%, #ff3939 121.34%)
     );
   }
 
-  .border-tapas-gradient {
+  .border-utapia-gradient {
     border-image: var(
-        --tapas-gradient,
+        --utapia-gradient,
         linear-gradient(137deg, #ffcb64 -0.96%, #ff3939 121.34%)
       )
       1;
   }
 
-  .tapas-gradient-text {
+  .utapia-gradient-text {
     background: var(
-      --tapas-gradient,
+      --utapia-gradient,
       linear-gradient(137deg, #ffcb64 -0.96%, #ff3939 121.34%)
     );
     -webkit-background-clip: text;

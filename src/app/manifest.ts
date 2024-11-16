@@ -2,10 +2,10 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Tapas",
-    short_name: "Tapas",
+    name: "Utapia",
+    short_name: "Utapia",
     description:
-      "Tapas makes your life easy by letting you pay in crypto anywhere!",
+      "Utapia makes your life easy by letting you pay in crypto anywhere!",
     start_url: "/",
     display: "standalone",
     background_color: "#ffffff",

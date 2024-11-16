@@ -140,11 +140,11 @@ export default function PayPage() {
           <div className=""></div>
         </header>
 
-        <div className="tapas-gradient-text text-center text-6xl font-bold">
+        <div className="utapia-gradient-text text-center text-6xl font-bold">
           $ {amount || "0.00"}
         </div>
 
-        <div className="tapas-gradient relative mx-auto h-64 w-64 rounded-3xl p-[2px]">
+        <div className="utapia-gradient relative mx-auto h-64 w-64 rounded-3xl p-[2px]">
           <div className="absolute left-[-2px] top-[-2px] z-[0] m-1 h-[calc(100%_-_4px)] w-[calc(100%_-_4px)] rounded-[calc(1.5rem_-_2px)] bg-background/50"></div>
 
           <div className="absolute left-[-2px] top-[-2px] z-[0] m-1 flex h-[calc(100%_-_4px)] w-[calc(100%_-_4px)] items-center justify-center overflow-hidden rounded-[calc(1.5rem_-_2px)] bg-background/50">

@@ -6,17 +6,17 @@ import { useEffect } from "react";
 import * as halo from "src/lib/halo";
 import { useLocalStorage } from "usehooks-ts";
 import * as viem from "viem";
-import { useTapasStore } from "~/components/tapas-provider";
+import { useUtapiaStore } from "~/components/utapia-provider";
 import { Button } from "~/components/ui/button";
 import { appComponentVariants, pageVariants } from "../../motion-pages";
 
 const VerifyNFC = () => {
-  const tapasAddress = useTapasStore((state) => state.tapasAddress);
+  const utapiaAddress = useUtapiaStore((state) => state.utapiaAddress);
   const router = useRouter();
   const [tapInProgress, setTapInProgress] = useLocalStorage("progress", false);
 
   useEffect(() => {
-    if (tapasAddress) {
+    if (utapiaAddress) {
       router.push("/app/home");
     }
 
@@ -24,7 +24,7 @@ const VerifyNFC = () => {
       setTapInProgress(false);
       router.push("/app/home");
     }
-  }, [tapInProgress, router, setTapInProgress, tapasAddress]);
+  }, [tapInProgress, router, setTapInProgress, utapiaAddress]);
 
   const { data: nfcPerms, isLoading: isNfcPermsLoading } = useQuery({
     queryKey: ["nfc perms"],
@@ -65,7 +65,7 @@ const VerifyNFC = () => {
       className="flex h-full w-full flex-col gap-4"
     >
       <motion.div variants={appComponentVariants} className="header">
-        <h1 className="tapas-gradient-text pt-16 text-center text-4xl font-bold">
+        <h1 className="utapia-gradient-text pt-16 text-center text-4xl font-bold">
           Add your Wrist Band
         </h1>
 

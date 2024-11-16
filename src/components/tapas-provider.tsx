@@ -2,17 +2,17 @@ import { create } from "zustand";
 import React from "react";
 import { combine, persist } from "zustand/middleware";
 
-export const useTapasStore = create(
+export const useUtapiaStore = create(
   persist(
     combine(
       {
-        tapasAddress: undefined as undefined | string,
+        utapiaAddress: undefined as undefined | string,
         worldAddress: undefined as undefined | string,
         mode: undefined as "world" | "external" | undefined,
       },
       (set) => ({
-        setTapasAddress: (tapasAddress: string) => {
-          set({ tapasAddress });
+        setUtapiaAddress: (utapiaAddress: string) => {
+          set({ utapiaAddress });
         },
         setWorldAddress: (worldAddress: string) => {
           set({ worldAddress });
@@ -23,20 +23,20 @@ export const useTapasStore = create(
         reset: () => {
           set({
             worldAddress: undefined,
-            tapasAddress: undefined,
+            utapiaAddress: undefined,
             mode: undefined,
           });
         },
       }),
     ),
     {
-      name: "tapas-storage",
+      name: "utapia-storage",
     },
   ),
 );
 
-const TapasProvider = ({ children }: { children: React.ReactNode }) => {
+const UtapiaProvider = ({ children }: { children: React.ReactNode }) => {
   return <div>{children}</div>;
 };
 
-export default TapasProvider;
+export default UtapiaProvider;

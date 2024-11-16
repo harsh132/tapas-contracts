@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Button } from "~/components/ui/button";
 import { useMiniKitContext } from "~/components/minikit-provider";
 import { MiniKit } from "@worldcoin/minikit-js";
-import { useTapasStore } from "~/components/tapas-provider";
+import { useUtapiaStore } from "~/components/utapia-provider";
 import { Check } from "lucide-react";
 import { useLocalStorage } from "usehooks-ts";
 import { motion } from "framer-motion";
@@ -15,8 +15,8 @@ const VerifyWorld = () => {
   const [_, setTapInProgress] = useLocalStorage("progress", false);
   const { isMiniKitSuccess } = useMiniKitContext();
 
-  const worldAddress = useTapasStore((s) => s.worldAddress);
-  const setWorldAddress = useTapasStore((s) => s.setWorldAddress);
+  const worldAddress = useUtapiaStore((s) => s.worldAddress);
+  const setWorldAddress = useUtapiaStore((s) => s.setWorldAddress);
 
   const {
     mutate: signInWithWorld,
@@ -42,7 +42,7 @@ const VerifyWorld = () => {
             new Date().getTime() + 7 * 24 * 60 * 60 * 1000,
           ),
           notBefore: new Date(new Date().getTime() - 24 * 60 * 60 * 1000),
-          statement: "Connect my world id with Tapas",
+          statement: "Connect my world id with Utapia",
         });
 
       if (finalPayload.status === "error") {
@@ -84,11 +84,13 @@ const VerifyWorld = () => {
       className="flex h-full w-full flex-col gap-4"
     >
       <motion.div variants={appComponentVariants} className="header">
-        <h1 className="tapas-gradient-text pt-16 text-center text-4xl font-bold">
+        <h1 className="utapia-gradient-text pt-16 text-center text-4xl font-bold">
           Verify your world ID
         </h1>
 
-        <p className="mt-8 text-center">Tapas is hungry for your world id 😋</p>
+        <p className="mt-8 text-center">
+          Utapia is hungry for your world id 😋
+        </p>
 
         {!!worldAddress && (
           <div className="mt-16 flex w-full justify-center gap-4 text-xl text-green-500">
@@ -106,11 +108,11 @@ const VerifyWorld = () => {
             onClick={() => {
               setTapInProgress(true);
               window.open(
-                `https://redirect-tapas-world.vercel.app/redirect?redirect=${encodeURIComponent(window.origin + `/app/world-user/2-verify-nfc`)}`,
+                `https://redirect-utapia-world.vercel.app/redirect?redirect=${encodeURIComponent(window.origin + `/app/world-user/2-verify-nfc`)}`,
                 "_system",
               );
             }}
-            className="tapas-gradient h-24"
+            className="utapia-gradient h-24"
           >
             Connect Your Band
           </Button>

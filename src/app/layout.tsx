@@ -14,9 +14,9 @@ const poppins = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Tapas",
+  title: "Utapia",
   description:
-    "Tapas makes your life easy by letting you pay in crypto anywhere!",
+    "Utapia makes your life easy by letting you pay in crypto anywhere!",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 

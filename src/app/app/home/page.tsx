@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEnsName } from "wagmi";
-import { useTapasStore } from "~/components/tapas-provider";
+import { useUtapiaStore } from "~/components/utapia-provider";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent } from "~/components/ui/card";
 import { shortenAddress } from "~/lib/utils";
@@ -25,8 +25,8 @@ const transactions = [
 ];
 
 const HomePage = () => {
-  const worldAddress = useTapasStore((s) => s.worldAddress);
-  const tapasAddress = useTapasStore((s) => s.tapasAddress);
+  const worldAddress = useUtapiaStore((s) => s.worldAddress);
+  const utapiaAddress = useUtapiaStore((s) => s.utapiaAddress);
   const { data: ensName } = useEnsName({
     address: worldAddress as `0x`,
   });
@@ -39,13 +39,13 @@ const HomePage = () => {
       key={"home"}
       className="relative flex h-full w-full flex-col gap-4"
     >
-      <Card className="tapas-gradient relative mb-6 mt-4 rounded-3xl p-[2px]">
+      <Card className="utapia-gradient relative mb-6 mt-4 rounded-3xl p-[2px]">
         <div className="absolute left-[-2px] top-[-2px] z-[0] m-1 h-[calc(100%_-_4px)] w-[calc(100%_-_4px)] rounded-[calc(1.5rem_-_4px)] bg-background/95"></div>
 
         <CardContent className="relative z-[2] p-6">
           <div className="mb-8 flex items-start justify-between">
             <div>
-              <p className="tapas-gradient-text mb-4 text-4xl font-bold">
+              <p className="utapia-gradient-text mb-4 text-4xl font-bold">
                 $43.37
               </p>
               <p className="text-sm">{ensName}</p>
@@ -70,7 +70,7 @@ const HomePage = () => {
             </Button>
           </div>
 
-          <div className="">{shortenAddress(tapasAddress)}</div>
+          <div className="">{shortenAddress(utapiaAddress)}</div>
           <div className="">{shortenAddress(worldAddress)}</div>
         </CardContent>
       </Card>
@@ -101,7 +101,7 @@ const HomePage = () => {
 
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="tapas-gradient h-8 w-8 rounded-full" />
+              <div className="utapia-gradient h-8 w-8 rounded-full" />
               <div>
                 <p className="font-medium">USDT</p>
                 <p className="text-sm text-muted-foreground">1000 USDT</p>
@@ -155,7 +155,7 @@ const HomePage = () => {
 
       <div className="sticky bottom-4 left-0 right-0 mt-auto grid grid-cols-2 gap-2">
         <Button
-          className="tapas-gradient h-16 text-lg hover:!bg-orange-500"
+          className="utapia-gradient h-16 text-lg hover:!bg-orange-500"
           onClick={() => router.push("/app/pay")}
         >
           Pay <ArrowUp className="h-5 w-5" />

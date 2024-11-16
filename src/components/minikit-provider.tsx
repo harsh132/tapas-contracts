@@ -10,7 +10,7 @@ import {
 import { MiniKit } from "@worldcoin/minikit-js";
 import { env } from "~/env";
 import dynamic from "next/dynamic";
-import { useTapasStore } from "./tapas-provider";
+import { useUtapiaStore } from "./utapia-provider";
 
 export const MiniKitContext = createContext<{
   isMiniKitSuccess: boolean;
@@ -20,7 +20,7 @@ export const MiniKitContext = createContext<{
 
 export default function MiniKitProvider({ children }: { children: ReactNode }) {
   const [isMiniKitSuccess, setIsMiniKitSuccess] = useState(false);
-  const setMode = useTapasStore((state) => state.setMode);
+  const setMode = useUtapiaStore((state) => state.setMode);
   useEffect(() => {
     // Passing appId in the install is optional
     // but allows you to access it later via `window.MiniKit.appId`
