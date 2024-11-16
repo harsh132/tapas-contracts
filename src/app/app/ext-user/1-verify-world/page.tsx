@@ -97,7 +97,7 @@ const VerifyWorld = () => {
             src="/faces/wink.svg"
             style={
               {
-                "--speed": Math.random() * 10,
+                "--speed": Math.random() * 10 + 10,
                 animationDelay: `-${Math.random() * 5}s`,
               } as CSSProperties
             }

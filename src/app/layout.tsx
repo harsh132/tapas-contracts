@@ -2,6 +2,10 @@ import "@coinbase/onchainkit/styles.css";
 import { type Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
 import "~/styles/globals.css";
+import { headers } from "next/headers";
+import { getConfig } from "~/lib/constants/wagmiConfig";
+import { cookieToInitialState } from "wagmi";
+import Providers from "~/components/providers";
 
 const poppins = Space_Grotesk({
   subsets: ["latin"],
@@ -20,9 +24,16 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const initialState = cookieToInitialState(
+    getConfig(),
+    headers().get("cookie"),
+  );
+
   return (
     <html lang="en" className={poppins.className} suppressHydrationWarning>
-      <body>{children}</body>
+      <body>
+        <Providers initialState={initialState}>{children}</Providers>
+      </body>
     </html>
   );
 }

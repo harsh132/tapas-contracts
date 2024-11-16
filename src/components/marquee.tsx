@@ -35,15 +35,15 @@ const Marquee = ({ direction }: { direction: "forwards" | "reverse" }) => {
                 "--item-position": index + 1,
               } as CSSProperties
             }
-            className="marquee-item h-16 w-16 overflow-hidden rounded-lg transition-all duration-300"
+            className="marquee-item h-32 w-32 rounded-lg transition-all duration-300"
           >
             <img
               alt=""
-              className="face-wobble h-16 w-16 p-0.5"
+              className="face-wobble h-16 w-16 rounded-xl p-0.5"
               src={`/faces/${face}.svg`}
               style={
                 {
-                  "--speed": `${Math.random() * 10}s`,
+                  "--speed": `${Math.random() * 10 + 10}s`,
                   animationDelay: `-${Math.random() * 5}s`,
                 } as CSSProperties
               }
