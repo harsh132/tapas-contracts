@@ -11,10 +11,9 @@ const useTokenBalances = () => {
   const mode = useUtapiaStore((s) => s.mode);
   const utapiaAddress = useUtapiaStore((s) => s.utapiaAddress);
   const wagmiAddress = useAccount();
-  let address = (
+  const address = (
     mode === "world" ? utapiaAddress : wagmiAddress
   ) as `0x${string}`;
-  address = "0x0b90994f83d2fde68f83c418141b42550de2cb4c";
 
   const setChainBalances = useTokenBalanceStore(
     (state) => state.setChainBalances,

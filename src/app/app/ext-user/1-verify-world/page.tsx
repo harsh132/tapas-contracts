@@ -26,7 +26,7 @@ const VerifyWorld = () => {
     mutationFn: async () => {
       if (window && isMiniKitSuccess && !MiniKit?.isInstalled()) {
         window?.alert("Minikit not installed");
-        return;
+        return false;
       }
 
       const res = await fetch(`/api/nonce`);
@@ -69,7 +69,7 @@ const VerifyWorld = () => {
           const walletAddress = MiniKit.walletAddress;
           setOwnerAddress(walletAddress!);
 
-          return true;
+          return walletAddress;
         }
       }
     },
@@ -110,7 +110,7 @@ const VerifyWorld = () => {
             onClick={() => {
               setTapInProgress(true);
               window.open(
-                `https://redirect-utapia-world.vercel.app/redirect?redirect=${encodeURIComponent(window.origin + `/app/world-user/2-verify-nfc`)}`,
+                `https://redirect-utapia-world.vercel.app/redirect?redirect=${encodeURIComponent(window.origin + `/app/world-user/2-verify-nfc?ownerAddr=${ownerAddress}`)}`,
                 "_system",
               );
             }}

@@ -1,10 +1,7 @@
 import "@coinbase/onchainkit/styles.css";
-import "~/styles/globals.css";
-import { Space_Grotesk } from "next/font/google";
 import { type Metadata } from "next";
-import Footer from "~/components/footer";
-import { ThemeProvider } from "~/components/theme-provider";
-import Providers from "~/components/providers";
+import { Space_Grotesk } from "next/font/google";
+import "~/styles/globals.css";
 
 const poppins = Space_Grotesk({
   subsets: ["latin"],

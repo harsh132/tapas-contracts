@@ -8,14 +8,42 @@ import { Button } from "~/components/ui/button";
 import { motion } from "framer-motion";
 import { appComponentVariants, pageVariants } from "./motion-pages";
 import Marquee from "~/components/marquee";
+import { useQuery } from "@tanstack/react-query";
 
 export default function HomePage() {
+  const ownerAddress = useUtapiaStore((state) => state.ownerAddress);
   const utapiaAddress = useUtapiaStore((state) => state.utapiaAddress);
+  const setUtapiaAddress = useUtapiaStore((state) => state.setUtapiaAddress);
   const router = useRouter();
   const [tapInProgress, setTapInProgress] = useLocalStorage("progress", false);
 
+  const { data: acc } = useQuery({
+    queryKey: ["user utapia address"],
+    queryFn: async () =>
+      await fetch("/api/get-scw-by-owner", {
+        body: JSON.stringify({
+          owner: ownerAddress,
+        }),
+      }).then(
+        (res) =>
+          res.json() as unknown as {
+            id: number;
+            chain: string;
+            smartAccount: string;
+            owner: string;
+            signer: string;
+          },
+      ),
+    enabled: Boolean(ownerAddress),
+  });
+
   useEffect(() => {
     if (utapiaAddress) {
+      router.push("/app/home");
+    }
+
+    if (acc?.smartAccount) {
+      setUtapiaAddress(acc.smartAccount);
       router.push("/app/home");
     }
 
@@ -23,7 +51,14 @@ export default function HomePage() {
       setTapInProgress(false);
       router.push("/app/home");
     }
-  }, [tapInProgress, router, setTapInProgress, utapiaAddress]);
+  }, [
+    tapInProgress,
+    router,
+    setTapInProgress,
+    utapiaAddress,
+    acc,
+    setUtapiaAddress,
+  ]);
 
   return (
     <motion.div

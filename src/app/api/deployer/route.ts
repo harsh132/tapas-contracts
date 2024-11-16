@@ -1,13 +1,11 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-nocheck: sa
-import { cookies } from "next/headers";
+import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
-import { createWalletClient, http, publicActions, getContract } from "viem";
+import { AccountFactoryABI } from "src/abis/AccountFactory";
+import { createWalletClient, getContract, http, publicActions } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { worldchainSepolia } from "viem/chains";
-import { AccountFactoryABI } from "src/abis/AccountFactory";
-import { SmartAccountABI } from "~/abis/SmartAccount";
-import { PrismaClient } from "@prisma/client";
 
 type Params = {
   chain: string;

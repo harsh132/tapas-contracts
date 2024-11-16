@@ -12,6 +12,8 @@ import useTokenBalanceStore from "~/hooks/useTokenBalanceStore";
 import { TOKENS } from "~/lib/constants/tokens";
 import { pageVariants } from "../motion-pages";
 import { formatNumber } from "~/lib/formatNumber";
+import Link from "next/link";
+import { shortenAddress } from "~/lib/utils";
 
 // Mock transaction data
 const transactions = [
@@ -75,8 +77,8 @@ const HomePage = () => {
               className=""
               onClick={() =>
                 mode === "world"
-                  ? router.push("/add-funds/world")
-                  : router.push("/add-funds/external")
+                  ? router.push("/app/add-funds/world")
+                  : router.push("/app/add-funds/external")
               }
             >
               Add Funds <Plus className="h-5 w-5" />
@@ -106,8 +108,17 @@ const HomePage = () => {
             </Button>
           </div>
 
-          {/* <div className="">{shortenAddress(utapiaAddress)}</div>
-          <div className="">{shortenAddress(ownerAddress)}</div> */}
+          <Link
+            href={
+              mode === "world"
+                ? `https://worldchain-mainnet.explorer.alchemy.com/address/${utapiaAddress}`
+                : `https://base.blockscout.com/address/${utapiaAddress}`
+            }
+            className="w-fit text-muted-foreground"
+            target="_blank"
+          >
+            {shortenAddress(utapiaAddress)}
+          </Link>
         </CardContent>
       </Card>
 
@@ -123,7 +134,7 @@ const HomePage = () => {
                 <div className="flex items-center gap-3">
                   <div className="h-8 w-8 rounded-full">
                     <img
-                      src={`/tokens/${token.symbol}.png`}
+                      src={`/tokens/${token.symbol.toLowerCase()}.png`}
                       className="utapia-gradient h-8 w-8 rounded-full"
                       alt="alt"
                     />
