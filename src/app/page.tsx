@@ -6,6 +6,7 @@ import { IDKitWidget, VerificationLevel } from "@worldcoin/idkit";
 import { env } from "~/env";
 import { MiniKit } from "@worldcoin/minikit-js";
 import { Button } from "~/components/ui/button";
+import Link from "next/link";
 
 // import {} from "@worldcoin/minikit-react";
 export default function HomePage() {
@@ -14,6 +15,13 @@ export default function HomePage() {
     <>
       <main className="h-screen px-4">
         <h1 className="pt-32 text-center text-2xl">Welcome to Tapas!</h1>
+
+        <Link
+          className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md bg-primary text-sm font-medium text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
+          href="/hardware"
+        >
+          Hardware page
+        </Link>
 
         <div>Minikit - {String(isMiniKitSuccess)}</div>
         <div>Address - {MiniKit.walletAddress}</div>
