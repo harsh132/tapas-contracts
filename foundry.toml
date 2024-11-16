@@ -1,6 +1,27 @@
 [profile.default]
+solc = "0.8.26"
 src = "src"
 out = "out"
 libs = ["lib"]
+ffi = true
+ast = true
+build_info = true
+extra_output = ["storageLayout"]
+
+[rpc_endpoints]
+sepolia = "${SEPOLIA_RPC_URL}"
+holesky = "${HOLESKY_RPC_URL}"
+amoy = "${AMOY_RPC_URL}"
+world = "${WORLD_RPC_URL}"
+4801 = "${WORLD_SEPOLIA_RPC_URL}"
+
+[etherscan]
+sepolia = { key = "${ETHERSCAN_API_KEY}" }
+world = { key = "${WORLD_API_KEY}" }
+4801 = { key = "${WORLD_API_KEY}", url = "https://api-sepolia.worldscan.org/api/", chain = "4801"}
+holesky = { key = "${ETHERSCAN_API_KEY}" }
+amoy2 = { key = "${POLYGONSCAN_API_KEY}", url = "https://api-amoy.polygonscan.com/api/", chain = "80002"}
+amoy = { key = "${OKLINK_API_KEY}", url = "https://www.oklink.com/api/v5/explorer/contract/verify-source-code-plugin/AMOY_TESTNET", chain = "80002"}
+
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
