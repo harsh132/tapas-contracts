@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { useLocalStorage } from "usehooks-ts";
 import { useTapasStore } from "~/components/tapas-provider";
 import { Button } from "~/components/ui/button";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { appComponentVariants, pageVariants } from "./motion-pages";
 import { useTransitionState } from "next-transition-router";
 

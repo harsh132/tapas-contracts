@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { TransitionRouter } from "next-transition-router";
-import { animate } from "motion/react";
+import { animate } from "framer-motion";
 
 export default function LayoutTransitionRouter({
   children,

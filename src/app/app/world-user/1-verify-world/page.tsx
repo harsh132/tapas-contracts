@@ -6,7 +6,7 @@ import { MiniKit } from "@worldcoin/minikit-js";
 import { useTapasStore } from "~/components/tapas-provider";
 import { Check } from "lucide-react";
 import { useLocalStorage } from "usehooks-ts";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { appComponentVariants, pageVariants } from "../../motion-pages";
 import { useTransitionState } from "next-transition-router";
 import { useMutation, useQuery } from "@tanstack/react-query";

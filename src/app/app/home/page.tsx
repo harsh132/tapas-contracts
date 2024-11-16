@@ -1,6 +1,6 @@
 "use client";
 import { ArrowDown, ArrowUp, Plus, Share2 } from "lucide-react";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEnsName } from "wagmi";

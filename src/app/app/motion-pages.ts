@@ -1,4 +1,4 @@
-import { Variants } from "motion/react";
+import { Variants } from "framer-motion";
 
 export const pageVariants: Variants = {
   initial: {

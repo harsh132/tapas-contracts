@@ -1,6 +1,6 @@
 "use client";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import * as halo from "src/lib/halo";

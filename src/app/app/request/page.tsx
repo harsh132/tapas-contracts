@@ -1,9 +1,11 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { ArrowLeft, Edit2, QrCode, Wifi } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { Button } from "~/components/ui/button";
+import { Card, CardContent } from "~/components/ui/card";
+import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 
 const numpadButtons = [
   "1",
@@ -19,6 +21,19 @@ const numpadButtons = [
   "0",
   "del",
 ];
+
+const AnimatedDigit = ({ digit, index }: { digit: string; index: number }) => (
+  <motion.span
+    key={`${digit}-${index}`}
+    initial={{ y: 20, opacity: 0 }}
+    animate={{ y: 0, opacity: 1 }}
+    exit={{ y: -20, opacity: 0 }}
+    transition={{ duration: 0.2 }}
+    className="inline-block"
+  >
+    {digit}
+  </motion.span>
+);
 
 export default function MerchantPayment() {
   const [amount, setAmount] = useState("");
@@ -52,6 +67,8 @@ export default function MerchantPayment() {
     router.back();
   };
 
+  const formattedAmount = amount || "0.00";
+
   return (
     <div className="flex min-h-screen flex-col">
       <div className="mx-auto flex h-full w-full flex-1 flex-col gap-8 py-8">
@@ -68,7 +85,16 @@ export default function MerchantPayment() {
             </header>
 
             <div className="tapas-gradient-text text-center text-6xl font-bold">
-              $ {amount || "0.00"}
+              $&nbsp;
+              <AnimatePresence mode="popLayout">
+                {formattedAmount.split("").map((digit, index) => (
+                  <AnimatedDigit
+                    key={`${digit}-${index}`}
+                    digit={digit}
+                    index={index}
+                  />
+                ))}
+              </AnimatePresence>
             </div>
 
             <div className="mt-auto grid grid-cols-3 gap-4">
@@ -115,7 +141,16 @@ export default function MerchantPayment() {
             </header>
 
             <div className="tapas-gradient-text text-center text-6xl font-bold">
-              $ {amount || "0.00"}
+              $&nbsp;
+              <AnimatePresence mode="popLayout">
+                {formattedAmount.split("").map((digit, index) => (
+                  <AnimatedDigit
+                    key={`${digit}-${index}`}
+                    digit={digit}
+                    index={index}
+                  />
+                ))}
+              </AnimatePresence>
             </div>
 
             <div className="flex h-32 w-full items-center justify-center space-x-4">
