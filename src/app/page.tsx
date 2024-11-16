@@ -1,14 +1,11 @@
 "use client";
-import { InstallPrompt } from "~/components/install";
-import { PushNotificationManager } from "~/components/notifications";
 
 export default function HomePage() {
   return (
-    <main className="">
-      <h1>Tapas</h1>
-
-      <PushNotificationManager />
-      <InstallPrompt />
-    </main>
+    <>
+      <main className="h-screen px-4">
+        <h1 className="pt-32 text-center text-2xl">Welcome to Tapas!</h1>
+      </main>
+    </>
   );
 }
