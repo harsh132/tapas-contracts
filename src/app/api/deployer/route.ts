@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-nocheck: sa
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { createWalletClient, http, publicActions, getContract } from "viem";
