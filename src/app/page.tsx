@@ -26,8 +26,6 @@ export default function HomePage() {
         <div>Minikit - {String(isMiniKitSuccess)}</div>
         <div>Address - {MiniKit.walletAddress}</div>
 
-        <Button onClick={signInWithWallet}>Sign In</Button>
-
         <IDKitWidget
           app_id={env.NEXT_PUBLIC_WORLD_APP_ID as `app_${string}`} // obtained from the Developer Portal
           action="vote_1" // this is your action id from the Developer Portal
@@ -45,39 +43,3 @@ export default function HomePage() {
     </>
   );
 }
-
-const signInWithWallet = async () => {
-  if (!MiniKit.isInstalled()) {
-    return;
-  }
-
-  const res = await fetch(`/api/nonce`);
-  const { nonce } = await res.json();
-
-  const { commandPayload: generateMessageResult, finalPayload } =
-    await MiniKit.commandsAsync.walletAuth({
-      nonce: nonce,
-      requestId: "0", // Optional
-      expirationTime: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000),
-      notBefore: new Date(new Date().getTime() - 24 * 60 * 60 * 1000),
-      statement:
-        "This is my statement and here is a link https://worldcoin.com/apps",
-    });
-
-  if (finalPayload.status === "error") {
-    return;
-  } else {
-    const response = await fetch("/api/complete-siwe", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        payload: finalPayload,
-        nonce,
-      }),
-    });
-
-    console.log(response);
-  }
-};
