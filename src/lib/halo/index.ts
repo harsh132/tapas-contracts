@@ -1,5 +1,6 @@
 // import * as haloWeb from "@arx-research/libhalo/api/web";
 import { haloCheckWebNFCPermission, execHaloCmdWeb } from "@arx-research/libhalo/api/web";
+import { type ExecHaloCmdWebOptions } from "@arx-research/libhalo/types";
 
 export type CommandResponse = {
   "input": {
@@ -15,18 +16,41 @@ export type CommandResponse = {
   "etherAddress": `0x${string}`
 };
 
+export type KeyInfo = {
+  "publicKeys": Record<string, string>,
+  "compressedPublicKeys": Record<string, string>,
+  "etherAddresses": Record<string, `0x${string}`>,
+}
+
+const options: ExecHaloCmdWebOptions = {
+  method: "webnfc"
+}
+
 export async function checkPermission() {
   return haloCheckWebNFCPermission();
+}
+
+export async function getKeys() {
+  const command = {
+    name: "get_pkeys"
+  };
+
+  return execHaloCmdWeb(command, options) as Promise<KeyInfo>;
+}
+
+export async function getKey() {
+  const keys = await getKeys();
+  return keys.etherAddresses["1"];
 }
 
 export function signMessage(message: string) {
   const command = {
     name: "sign",
     keyNo: 1,
-    message,
+    message
   };
 
-  return execHaloCmdWeb(command) as Promise<CommandResponse>;
+  return execHaloCmdWeb(command, options) as Promise<CommandResponse>;
 }
 
 /// Sign a digest using the hardware wallet.
@@ -42,5 +66,5 @@ export function signDigest(digest: string) {
     digest,
   };
 
-  return execHaloCmdWeb(command) as Promise<CommandResponse>;
+  return execHaloCmdWeb(command, options) as Promise<CommandResponse>;
 }
