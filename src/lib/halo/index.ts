@@ -1,4 +1,5 @@
-import * as haloWeb from "@arx-research/libhalo/api/web";
+// import * as haloWeb from "@arx-research/libhalo/api/web";
+import { haloCheckWebNFCPermission, execHaloCmdWeb } from "@arx-research/libhalo/api/web";
 
 export type CommandResponse = {
   "input": {
@@ -15,7 +16,7 @@ export type CommandResponse = {
 };
 
 export async function checkPermission() {
-  return haloWeb.haloCheckWebNFCPermission();
+  return haloCheckWebNFCPermission();
 }
 
 export function signMessage(message: string) {
@@ -25,7 +26,7 @@ export function signMessage(message: string) {
     message,
   };
 
-  return haloWeb.execHaloCmdWeb(command) as Promise<CommandResponse>;
+  return execHaloCmdWeb(command) as Promise<CommandResponse>;
 }
 
 /// Sign a digest using the hardware wallet.
@@ -41,5 +42,5 @@ export function signDigest(digest: string) {
     digest,
   };
 
-  return haloWeb.execHaloCmdWeb(command) as Promise<CommandResponse>;
+  return execHaloCmdWeb(command) as Promise<CommandResponse>;
 }
