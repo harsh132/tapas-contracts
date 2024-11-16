@@ -121,7 +121,7 @@ const VerifyNFC = () => {
         )}
       </motion.div>
 
-      <Button
+      {/* <Button
         onClick={() => {
           window.open(
             "https://worldcoin.org/mini-app?app_id=app_staging_a9c5694d434b72499697d674ca67f950",
@@ -130,7 +130,7 @@ const VerifyNFC = () => {
         variant="destructive"
       >
         OVERRIDE
-      </Button>
+      </Button> */}
     </motion.div>
   );
 };
