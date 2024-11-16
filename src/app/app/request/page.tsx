@@ -2,13 +2,14 @@
 
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowLeft, Edit2, QrCode, Wifi } from "lucide-react";
+import { ArrowLeft, Edit2, Wifi } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "~/components/ui/button";
 import { numpadButtons } from "~/lib/constants";
 import * as halo from "src/lib/halo";
 import { useUtapiaStore } from "~/components/utapia-provider";
+import QRCode from "react-qr-code";
 
 export default function MerchantPayment() {
   const [amount, setAmount] = useState("");
@@ -47,7 +48,11 @@ export default function MerchantPayment() {
     queryFn: async () => await halo.checkPermission().then(() => true),
   });
 
-  const { mutate, isPending } = useMutation({
+  const {
+    mutate,
+    isPending,
+    data: completedTxHash,
+  } = useMutation({
     mutationKey: ["tap nfc"],
     mutationFn: async () => {
       const nfcAddress = await halo.getKey();
@@ -70,7 +75,7 @@ export default function MerchantPayment() {
 
       const signature = await halo.signDigest(hash);
 
-      await fetch("/api/submit", {
+      const res2 = await fetch("/api/submit", {
         body: JSON.stringify({
           chain: mode === "world" ? "4801" : "84532",
           receiver: nfcAddress,
@@ -82,9 +87,15 @@ export default function MerchantPayment() {
         }),
       });
 
-      return signature;
+      const data = (await res2.json()) as { status: string; tx: string };
+
+      return data.tx;
     },
   });
+
+  useEffect(() => {
+    if (completedTxHash) router.push(`/app/tx/${completedTxHash}`);
+  }, [completedTxHash, router]);
 
   const formattedAmount = amount || "0.00";
 
@@ -183,7 +194,12 @@ export default function MerchantPayment() {
             </div>
 
             <div className="flex h-32 w-full items-center justify-center space-x-4">
-              <QrCode className="h-32 w-32" />
+              <QRCode
+                value={`${window?.origin}/app/pay?amount=${amount}&to=${utapiaAddress}`}
+                bgColor="#FFFFFF"
+                fgColor="#000000"
+                size={160}
+              />
             </div>
 
             <Button
