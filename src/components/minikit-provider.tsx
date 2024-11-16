@@ -1,5 +1,6 @@
 "use client"; // Required for Next.js
 
+import { MiniKit } from "@worldcoin/minikit-js";
 import {
   createContext,
   type ReactNode,
@@ -7,9 +8,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { MiniKit } from "@worldcoin/minikit-js";
 import { env } from "~/env";
-import dynamic from "next/dynamic";
 import { useUtapiaStore } from "./utapia-provider";
 
 export const MiniKitContext = createContext<{
@@ -28,7 +27,7 @@ export default function MiniKitProvider({ children }: { children: ReactNode }) {
     MiniKit.install(env.NEXT_PUBLIC_WORLD_APP_ID);
     setIsMiniKitSuccess(MiniKit.isInstalled());
     setMode(MiniKit.isInstalled() ? "world" : "external");
-  }, [MiniKit]);
+  }, [setMode]);
 
   return (
     <MiniKitContext.Provider value={{ isMiniKitSuccess }}>

@@ -125,7 +125,7 @@ export default function MerchantPayment() {
                 <ArrowLeft className="h-6 w-6" />
               </Button>
               <h1 className="text-center text-xl font-bold leading-none">
-                Payment Details
+                Request Payment
               </h1>
 
               <Button variant="ghost" size="icon" onClick={handleEdit}>
@@ -156,8 +156,8 @@ export default function MerchantPayment() {
             </div>
 
             <Button className="mb-4 mt-auto h-16 w-full text-xl">
-              <Wifi className="mr-2 h-8 w-8" />
-              Tap to Pay
+              <Wifi className="mr-2 h-10 w-10 rotate-180" />
+              Scan NFC to Accept Payment
             </Button>
           </>
         )}

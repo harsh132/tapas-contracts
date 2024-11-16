@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import { Suspense } from "react";
 
 import { ThemeProvider } from "~/components/theme-provider";
+import DataProviders from "~/components/data-providers";
 
 const Providers = dynamic(
   () => import("~/components/providers").then((c) => c.default),
@@ -31,9 +32,11 @@ export default function RootLayout({
         }
       >
         <Providers>
-          <motion.main className="relative mx-auto flex h-[100svh] w-full max-w-[60ch] flex-col gap-4 px-4">
-            <AnimatePresence mode="popLayout">{children}</AnimatePresence>
-          </motion.main>
+          <DataProviders>
+            <motion.main className="relative mx-auto flex h-[100svh] w-full max-w-[60ch] flex-col gap-4 px-4">
+              <AnimatePresence mode="popLayout">{children}</AnimatePresence>
+            </motion.main>
+          </DataProviders>
         </Providers>
       </Suspense>
     </ThemeProvider>

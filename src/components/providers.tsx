@@ -13,7 +13,6 @@ export function Providers(props: {
   const [queryClient] = useState(() => new QueryClient());
 
   return (
-    // <ErudaProvider>
     <WagmiProvider config={config} initialState={props.initialState}>
       <QueryClientProvider client={queryClient}>
         <MiniKitProvider>
@@ -27,7 +26,6 @@ export function Providers(props: {
         {/* </OnchainKitProvider> */}
       </QueryClientProvider>
     </WagmiProvider>
-    // </ErudaProvider>
   );
 }
 

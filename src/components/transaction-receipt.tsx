@@ -1,18 +1,20 @@
-"use client";
-
 import { motion } from "framer-motion";
 import { CheckCircle } from "lucide-react";
+import React from "react";
+import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
-import { Button } from "~/components/ui/button";
+import { formatNumber } from "~/lib/formatNumber";
 
-const ConfirmationScreen = () => {
+const TransactionReceipt = ({
+  amount,
+  recipient,
+  timestamp,
+}: {
+  amount: string;
+  recipient: string;
+  timestamp: number;
+}) => {
   const router = useRouter();
-
-  const { recipient, amount, timestamp } = {
-    recipient: "",
-    amount: 0,
-    timestamp: 0,
-  };
 
   return (
     <motion.div
@@ -44,7 +46,7 @@ const ConfirmationScreen = () => {
       <div className="flex w-full flex-col gap-4 pt-8">
         <div className="flex justify-between">
           <span className="text-muted-foreground">Amount Paid</span>
-          <span className="font-bold">${amount}</span>
+          <span className="font-bold">${formatNumber(amount)}</span>
         </div>
 
         <div className="flex justify-between">
@@ -54,7 +56,7 @@ const ConfirmationScreen = () => {
 
         <div className="flex justify-between">
           <span className="text-muted-foreground">Date</span>
-          <span>{timestamp}</span>
+          <span>{new Date(timestamp).toLocaleDateString()}</span>
         </div>
 
         <div className="flex justify-between">
@@ -73,4 +75,4 @@ const ConfirmationScreen = () => {
   );
 };
 
-export default ConfirmationScreen;
+export default TransactionReceipt;

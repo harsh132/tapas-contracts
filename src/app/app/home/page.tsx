@@ -1,14 +1,17 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
-import { ArrowDown, ArrowUp, Plus, Share2 } from "lucide-react";
 import { motion } from "framer-motion";
-import Image from "next/image";
+import { ArrowDown, ArrowUp, Plus, Share2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useMemo } from "react";
 import { useEnsName } from "wagmi";
-import { useUtapiaStore } from "~/components/utapia-provider";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent } from "~/components/ui/card";
-import { shortenAddress } from "~/lib/utils";
+import { useUtapiaStore } from "~/components/utapia-provider";
+import useTokenBalanceStore from "~/hooks/useTokenBalanceStore";
+import { TOKENS } from "~/lib/constants/tokens";
 import { pageVariants } from "../motion-pages";
+import { formatNumber } from "~/lib/formatNumber";
 
 // Mock transaction data
 const transactions = [
@@ -25,13 +28,28 @@ const transactions = [
 ];
 
 const HomePage = () => {
+  const chainBalances = useTokenBalanceStore((s) => s.chainBalances);
+  const mode = useUtapiaStore((s) => s.mode);
   const worldAddress = useUtapiaStore((s) => s.worldAddress);
   const utapiaAddress = useUtapiaStore((s) => s.utapiaAddress);
+
   const { data: ensName } = useEnsName({
     address: worldAddress as `0x`,
   });
 
   const router = useRouter();
+
+  const usdBalance = useMemo(() => {
+    let bal = 0;
+
+    Object.entries(chainBalances).forEach(([chain, cb]) => {
+      Object.entries(cb).forEach(([token, balance]) => {
+        bal += Number(balance) * (TOKENS[Number(chain)]![token]!.price ?? 0);
+      });
+    });
+
+    return bal;
+  }, [chainBalances]);
 
   return (
     <motion.div
@@ -42,25 +60,36 @@ const HomePage = () => {
       <Card className="utapia-gradient relative mb-6 mt-4 rounded-3xl p-[2px]">
         <div className="absolute left-[-2px] top-[-2px] z-[0] m-1 h-[calc(100%_-_4px)] w-[calc(100%_-_4px)] rounded-[calc(1.5rem_-_4px)] bg-background/95"></div>
 
-        <CardContent className="relative z-[2] p-6">
-          <div className="mb-8 flex items-start justify-between">
+        <CardContent className="relative z-[2] flex flex-col gap-2 p-6">
+          <div className="flex items-start justify-between">
             <div>
-              <p className="utapia-gradient-text mb-4 text-4xl font-bold">
-                $43.37
+              <p className="utapia-gradient-text text-4xl font-bold">
+                ${formatNumber(usdBalance)}
               </p>
               <p className="text-sm">{ensName}</p>
             </div>
 
             <div className="ml-auto"></div>
 
-            <Button
-              className=""
-              variant="secondary"
-              onClick={() => router.push("/add-funds")}
-            >
-              Add <Plus className="h-5 w-5" />
+            <Button className="" onClick={() => router.push("/add-funds")}>
+              Add Funds <Plus className="h-5 w-5" />
             </Button>
+          </div>
 
+          <div className="flex justify-end">
+            <Button className="bg-foreground text-sm text-background">
+              {mode === "external" ? (
+                <img className="h-5 w-5" src="/chains/base.png" alt="" />
+              ) : (
+                <img className="h-5 w-5" src="/chains/world.png" alt="" />
+              )}
+
+              {mode === "external" ? "Base" : "World"}
+            </Button>
+          </div>
+
+          <div className="flex justify-end">
+            <div className="">{ensName}</div>
             <Button
               size="icon"
               variant="ghost"
@@ -70,47 +99,52 @@ const HomePage = () => {
             </Button>
           </div>
 
-          <div className="">{shortenAddress(utapiaAddress)}</div>
-          <div className="">{shortenAddress(worldAddress)}</div>
+          {/* <div className="">{shortenAddress(utapiaAddress)}</div>
+          <div className="">{shortenAddress(worldAddress)}</div> */}
         </CardContent>
       </Card>
 
       <div className="mb-6">
         <h2 className="mb-4 text-xl font-bold">Balances</h2>
         <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="h-8 w-8">
-                <Image
-                  src="/logo.512.png"
-                  alt="Matic"
-                  width={32}
-                  height={32}
-                  className="rounded-full"
-                />
-              </div>
-              <div>
-                <p className="font-medium">USDC</p>
-                <p className="text-sm text-muted-foreground">49.019 MATIC</p>
-              </div>
-            </div>
-            <div className="text-right">
-              <p className="font-medium">$1</p>
-            </div>
-          </div>
+          {Object.values(TOKENS[mode === "world" ? 480 : 8453] ?? {}).map(
+            (token) => (
+              <div
+                className="flex items-center justify-between"
+                key={`${token.address} + ${token.chainId}`}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="h-8 w-8 rounded-full">
+                    <img
+                      src={`/tokens/${token.symbol}.png`}
+                      className="utapia-gradient h-8 w-8 rounded-full"
+                      alt="alt"
+                    />
+                  </div>
 
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="utapia-gradient h-8 w-8 rounded-full" />
-              <div>
-                <p className="font-medium">USDT</p>
-                <p className="text-sm text-muted-foreground">1000 USDT</p>
+                  <div>
+                    <p className="font-medium">{token.name}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {formatNumber(
+                        chainBalances[token.chainId]?.[token.address] ?? "0",
+                      )}{" "}
+                      {token.symbol}
+                    </p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="font-medium">
+                    $
+                    {formatNumber(
+                      parseFloat(
+                        chainBalances[token.chainId]?.[token.address] ?? "0",
+                      ) * (token.price ?? 0),
+                    )}
+                  </p>
+                </div>
               </div>
-            </div>
-            <div className="text-right">
-              <p className="font-medium">$1</p>
-            </div>
-          </div>
+            ),
+          )}
         </div>
       </div>
 
