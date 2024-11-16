@@ -20,7 +20,7 @@ export default function MiniKitProvider({ children }: { children: ReactNode }) {
     // Passing appId in the install is optional
     // but allows you to access it later via `window.MiniKit.appId`
     MiniKit.install(env.NEXT_PUBLIC_WORLD_APP_ID);
-    setIsMiniKitSuccess(MiniKit.isInstalled());
+    setIsMiniKitSuccess(MiniKit.isInstalled(true));
   }, []);
 
   return (
