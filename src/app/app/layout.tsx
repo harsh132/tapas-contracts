@@ -1,6 +1,7 @@
 "use client";
 
 import { LoaderCircle } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 
@@ -30,9 +31,9 @@ export default function RootLayout({
         }
       >
         <Providers>
-          <main className="relative mx-auto flex h-screen w-full max-w-[60ch] flex-col gap-4 px-4">
-            {children}
-          </main>
+          <motion.main className="relative mx-auto flex h-[100svh] w-full max-w-[60ch] flex-col gap-4 px-4">
+            <AnimatePresence>{children}</AnimatePresence>
+          </motion.main>
         </Providers>
       </Suspense>
     </ThemeProvider>

@@ -10,6 +10,7 @@ import {
 import { MiniKit } from "@worldcoin/minikit-js";
 import { env } from "~/env";
 import dynamic from "next/dynamic";
+import { useTapasStore } from "./tapas-provider";
 
 export const MiniKitContext = createContext<{
   isMiniKitSuccess: boolean;
@@ -19,13 +20,14 @@ export const MiniKitContext = createContext<{
 
 export default function MiniKitProvider({ children }: { children: ReactNode }) {
   const [isMiniKitSuccess, setIsMiniKitSuccess] = useState(false);
-
+  const setMode = useTapasStore((state) => state.setMode);
   useEffect(() => {
     // Passing appId in the install is optional
     // but allows you to access it later via `window.MiniKit.appId`
 
     MiniKit.install(env.NEXT_PUBLIC_WORLD_APP_ID);
-    setIsMiniKitSuccess(MiniKit.isInstalled(true));
+    setIsMiniKitSuccess(MiniKit.isInstalled());
+    setMode(MiniKit.isInstalled() ? "world" : "external");
   }, [MiniKit]);
 
   return (

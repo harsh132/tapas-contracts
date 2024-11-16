@@ -1,25 +1,37 @@
 import { create } from "zustand";
 import React from "react";
-import { combine } from "zustand/middleware";
+import { combine, persist } from "zustand/middleware";
 
 export const useTapasStore = create(
-  combine(
+  persist(
+    combine(
+      {
+        tapasAddress: undefined as undefined | string,
+        worldAddress: undefined as undefined | string,
+        mode: undefined as "world" | "external" | undefined,
+      },
+      (set) => ({
+        setTapasAddress: (tapasAddress: string) => {
+          set({ tapasAddress });
+        },
+        setWorldAddress: (worldAddress: string) => {
+          set({ worldAddress });
+        },
+        setMode: (mode: "world" | "external" | undefined) => {
+          set({ mode });
+        },
+        reset: () => {
+          set({
+            worldAddress: undefined,
+            tapasAddress: undefined,
+            mode: undefined,
+          });
+        },
+      }),
+    ),
     {
-      tapasAddress: undefined as undefined | string,
-      worldAddress: undefined as undefined | string,
-      mode: undefined as "world" | "external" | undefined,
+      name: "tapas-storage",
     },
-    (set) => ({
-      setScwAddress: (tapasAddress: string) => {
-        set({ tapasAddress });
-      },
-      setWorldAddress: (worldAddress: string) => {
-        set({ worldAddress });
-      },
-      setMode: (mode: "world" | "external" | undefined) => {
-        set({ mode });
-      },
-    }),
   ),
 );
 
