@@ -5,16 +5,14 @@ import { CheckCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "~/components/ui/button";
 
-const ConfirmationScreen = ({
-  recipient,
-  amount,
-  timestamp,
-}: {
-  recipient: string;
-  amount: string;
-  timestamp: string;
-}) => {
+const ConfirmationScreen = () => {
   const router = useRouter();
+
+  const { recipient, amount, timestamp } = {
+    recipient: "",
+    amount: 0,
+    timestamp: 0,
+  };
 
   return (
     <motion.div
