@@ -5,7 +5,7 @@ import { type State, WagmiProvider } from "wagmi";
 import { getConfig } from "~/lib/constants/wagmiConfig";
 import MiniKitProvider from "./minikit-provider";
 
-export function AppProviders(props: {
+export function Providers(props: {
   children: ReactNode;
   initialState?: State;
 }) {
@@ -31,4 +31,4 @@ export function AppProviders(props: {
   );
 }
 
-export default AppProviders;
+export default Providers;

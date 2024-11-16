@@ -23,7 +23,7 @@ export default function MiniKitProvider({ children }: { children: ReactNode }) {
   const [miniKit, setMiniKit] = useState<typeof MiniKit>();
 
   useEffect(() => {
-    setMiniKit(MiniKit);
+    setMiniKit(new MiniKit());
   }, []);
 
   useEffect(() => {

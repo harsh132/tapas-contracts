@@ -4,7 +4,7 @@ import { Space_Grotesk } from "next/font/google";
 import { type Metadata } from "next";
 import Footer from "~/components/footer";
 import { ThemeProvider } from "~/components/theme-provider";
-import AppProviders from "~/components/providers";
+import Providers from "~/components/providers";
 
 const poppins = Space_Grotesk({
   subsets: ["latin"],
