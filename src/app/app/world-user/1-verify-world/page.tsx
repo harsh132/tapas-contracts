@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { CSSProperties, useState } from "react";
 import { Button } from "~/components/ui/button";
 import { useMiniKitContext } from "~/components/minikit-provider";
 import { MiniKit } from "@worldcoin/minikit-js";
@@ -93,7 +93,17 @@ const VerifyWorld = () => {
         </p>
 
         <div className="flex w-full justify-center">
-          <img className="h-32 w-32 rounded-lg" src="/faces/wink.svg" alt="" />
+          <img
+            className="face-wobble h-32 w-32 rounded-lg"
+            src="/faces/wink.svg"
+            alt=""
+            style={
+              {
+                "--speed": Math.random() * 10,
+                animationDelay: `-${Math.random() * 5}s`,
+              } as CSSProperties
+            }
+          />
         </div>
 
         {!!ownerAddress && (

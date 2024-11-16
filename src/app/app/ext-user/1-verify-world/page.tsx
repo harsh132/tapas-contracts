@@ -8,6 +8,7 @@ import { useMiniKitContext } from "~/components/minikit-provider";
 import { Button } from "~/components/ui/button";
 import { useUtapiaStore } from "~/components/utapia-provider";
 import { appComponentVariants, pageVariants } from "../../motion-pages";
+import { CSSProperties } from "react";
 
 const VerifyWorld = () => {
   const [_, setTapInProgress] = useLocalStorage("progress", false);
@@ -91,7 +92,17 @@ const VerifyWorld = () => {
         </p>
 
         <div className="flex w-full justify-center">
-          <img className="h-32 w-32 rounded-lg" src="/faces/wink.svg" alt="" />
+          <img
+            className="face-wobble h-32 w-32 rounded-lg"
+            src="/faces/wink.svg"
+            style={
+              {
+                "--speed": Math.random() * 10,
+                animationDelay: `-${Math.random() * 5}s`,
+              } as CSSProperties
+            }
+            alt=""
+          />
         </div>
 
         {!!ownerAddress && (

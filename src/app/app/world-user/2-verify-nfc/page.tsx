@@ -2,12 +2,11 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { CSSProperties, useEffect } from "react";
 import * as halo from "src/lib/halo";
 import { useLocalStorage } from "usehooks-ts";
-import * as viem from "viem";
-import { useUtapiaStore } from "~/components/utapia-provider";
 import { Button } from "~/components/ui/button";
+import { useUtapiaStore } from "~/components/utapia-provider";
 import { appComponentVariants, pageVariants } from "../../motion-pages";
 
 const VerifyNFC = () => {
@@ -87,7 +86,17 @@ const VerifyNFC = () => {
               : null}
 
         <div className="flex w-full justify-center">
-          <img className="h-32 w-32 rounded-lg" src="/faces/grin.svg" alt="" />
+          <img
+            className="face-wobble h-32 w-32 rounded-lg"
+            src="/faces/grin.svg"
+            alt=""
+            style={
+              {
+                "--speed": Math.random() * 10,
+                animationDelay: `-${Math.random() * 5}s`,
+              } as CSSProperties
+            }
+          />
         </div>
       </motion.div>
 

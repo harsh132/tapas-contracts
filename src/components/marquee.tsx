@@ -39,8 +39,14 @@ const Marquee = ({ direction }: { direction: "forwards" | "reverse" }) => {
           >
             <img
               alt=""
-              className="h-16 w-16 p-0.5"
+              className="face-wobble h-16 w-16 p-0.5"
               src={`/faces/${face}.svg`}
+              style={
+                {
+                  "--speed": `${Math.random() * 10}s`,
+                  animationDelay: `-${Math.random() * 5}s`,
+                } as CSSProperties
+              }
             />
           </div>
         ))}

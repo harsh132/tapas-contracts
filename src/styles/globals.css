@@ -134,3 +134,27 @@
     transform: translateX(calc(-100cqw - 100%));
   }
 }
+
+.face-wobble {
+  animation: face-wobble var(--speed) ease-in-out infinite;
+}
+@keyframes face-wobble {
+  0% {
+    transform: rotate(-15deg);
+  }
+  10% {
+    transform: rotate(-5deg);
+  }
+  25% {
+    transform: rotate(20deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+  80% {
+    transform: rotate(-10deg);
+  }
+  100% {
+    transform: rotate(-15deg);
+  }
+}

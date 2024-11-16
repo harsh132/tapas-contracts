@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { motion } from "framer-motion";
-import { ArrowDown, ArrowUp, Plus, Share2 } from "lucide-react";
+import { ArrowDown, ArrowUp, ArrowUpDown, Plus, Share2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 import { useEnsName } from "wagmi";
@@ -14,20 +14,7 @@ import { pageVariants } from "../motion-pages";
 import { formatNumber } from "~/lib/formatNumber";
 import Link from "next/link";
 import { shortenAddress } from "~/lib/utils";
-
-// Mock transaction data
-const transactions = [
-  { id: 1, type: "received", amount: 25.0, from: "Alice", date: "2024-11-16" },
-  { id: 2, type: "sent", amount: 15.5, to: "Bob", date: "2024-11-15" },
-  {
-    id: 3,
-    type: "received",
-    amount: 50.0,
-    from: "Charlie",
-    date: "2024-11-14",
-  },
-  { id: 4, type: "sent", amount: 10.0, to: "David", date: "2024-11-13" },
-];
+import { useQuery } from "@tanstack/react-query";
 
 const HomePage = () => {
   const chainBalances = useTokenBalanceStore((s) => s.chainBalances);
@@ -52,6 +39,36 @@ const HomePage = () => {
 
     return bal;
   }, [chainBalances]);
+
+  const { data: transactions } = useQuery({
+    queryKey: ["activity"],
+    queryFn: async () => {
+      await new Promise((resolve) => {
+        setTimeout(() => resolve(true), 3000);
+      });
+
+      const transactions = [
+        {
+          id: 1,
+          type: "received",
+          amount: 25.0,
+          from: "Alice",
+          date: "2024-11-16",
+        },
+        { id: 2, type: "sent", amount: 15.5, to: "Bob", date: "2024-11-15" },
+        {
+          id: 3,
+          type: "received",
+          amount: 50.0,
+          from: "Charlie",
+          date: "2024-11-14",
+        },
+        { id: 4, type: "sent", amount: 10.0, to: "David", date: "2024-11-13" },
+      ];
+
+      return transactions;
+    },
+  });
 
   return (
     <motion.div
@@ -169,40 +186,64 @@ const HomePage = () => {
       <div className="mb-6">
         <h2 className="mb-4 text-xl font-bold">Activity</h2>
 
-        {transactions.map((transaction) => (
-          <div
-            key={transaction.id}
-            className="flex items-center justify-between border-b py-3 last:border-b-0"
-          >
-            <div className="flex items-center gap-3">
+        {transactions
+          ? transactions?.map((transaction) => (
               <div
-                className={`rounded-full p-2 ${transaction.type === "received" ? "bg-green-100" : "bg-red-100"}`}
+                key={transaction.id}
+                className="flex items-center justify-between border-b py-3 last:border-b-0"
               >
-                {transaction.type === "received" ? (
-                  <ArrowDown className="h-5 w-5 text-green-600" />
-                ) : (
-                  <ArrowUp className="h-5 w-5 text-red-600" />
-                )}
-              </div>
-              <div>
-                <p className="font-medium">
-                  {transaction.type === "received"
-                    ? `Received from ${transaction.from}`
-                    : `Sent to ${transaction.to}`}
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`rounded-full p-2 ${transaction.type === "received" ? "bg-green-100" : "bg-red-100"}`}
+                  >
+                    {transaction.type === "received" ? (
+                      <ArrowDown className="h-5 w-5 text-green-600" />
+                    ) : (
+                      <ArrowUp className="h-5 w-5 text-red-600" />
+                    )}
+                  </div>
+                  <div>
+                    <p className="font-medium">
+                      {transaction.type === "received"
+                        ? `Received from ${transaction.from}`
+                        : `Sent to ${transaction.to}`}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {transaction.date}
+                    </p>
+                  </div>
+                </div>
+                <p
+                  className={`font-bold ${transaction.type === "received" ? "text-green-600" : "text-red-600"}`}
+                >
+                  {transaction.type === "received" ? "+" : "-"}$
+                  {transaction.amount.toFixed(2)}
                 </p>
-                <p className="text-sm text-muted-foreground">
-                  {transaction.date}
+              </div>
+            ))
+          : Array.from({ length: 5 }).map((_, i) => (
+              <div
+                className="flex items-center justify-between border-b py-3 last:border-b-0"
+                key={i}
+              >
+                <div className="flex items-center gap-3">
+                  <div className={`rounded-full bg-accent p-2`}>
+                    <ArrowUpDown className="h-5 w-5 text-accent" />
+                  </div>
+                  <div>
+                    <p className="bg-accent font-medium text-transparent">
+                      ..............................
+                    </p>
+                    <p className="bg-accent text-sm text-transparent">
+                      ................... ..........
+                    </p>
+                  </div>
+                </div>
+                <p className={`bg-accent font-bold text-transparent`}>
+                  ...........................
                 </p>
               </div>
-            </div>
-            <p
-              className={`font-bold ${transaction.type === "received" ? "text-green-600" : "text-red-600"}`}
-            >
-              {transaction.type === "received" ? "+" : "-"}$
-              {transaction.amount.toFixed(2)}
-            </p>
-          </div>
-        ))}
+            ))}
       </div>
 
       <div className="sticky bottom-4 left-0 right-0 mt-auto grid grid-cols-2 gap-2">

@@ -89,7 +89,6 @@ export default function PayPage() {
     console.log(result);
 
     setScannedResult(result.data);
-    window.alert(result.data);
   };
 
   // Fail
