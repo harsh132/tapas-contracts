@@ -10,12 +10,17 @@ import {
 import { MiniKit } from "@worldcoin/minikit-js";
 import { env } from "~/env";
 
-export const MiniKitContext = createContext({
+export const MiniKitContext = createContext<{
+  isMiniKitSuccess: boolean;
+  miniKitSDK: typeof MiniKit;
+}>({
   isMiniKitSuccess: false,
+  miniKitSDK: MiniKit,
 });
 
 export default function MiniKitProvider({ children }: { children: ReactNode }) {
   const [isMiniKitSuccess, setIsMiniKitSuccess] = useState(false);
+
   useEffect(() => {
     // Passing appId in the install is optional
     // but allows you to access it later via `window.MiniKit.appId`
@@ -24,7 +29,7 @@ export default function MiniKitProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <MiniKitContext.Provider value={{ isMiniKitSuccess }}>
+    <MiniKitContext.Provider value={{ isMiniKitSuccess, miniKitSDK: MiniKit }}>
       {children}
     </MiniKitContext.Provider>
   );

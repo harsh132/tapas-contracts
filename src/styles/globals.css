@@ -57,6 +57,23 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
+
+  .tapas-gradient {
+    background: var(
+      --tapas-gradient,
+      linear-gradient(137deg, #ffcb64 -0.96%, #ff3939 121.34%)
+    );
+  }
+
+  .tapas-gradient-text {
+    background: var(
+      --tapas-gradient,
+      linear-gradient(137deg, #ffcb64 -0.96%, #ff3939 121.34%)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 }
 
 @layer base {

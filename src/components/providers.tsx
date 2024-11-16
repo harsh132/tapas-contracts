@@ -1,10 +1,10 @@
 "use client";
-import { OnchainKitProvider } from "@coinbase/onchainkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { type ReactNode, useEffect, useState } from "react";
+import { type ReactNode, useState } from "react";
 import { type State, WagmiProvider } from "wagmi";
-import { base } from "wagmi/chains";
 import { getConfig } from "~/lib/constants/wagmiConfig";
+import { ErudaProvider } from "./eruda";
+import MiniKitProvider, { MiniKitContext } from "./minikit-provider";
 
 export function AppProviders(props: {
   children: ReactNode;
@@ -14,16 +14,21 @@ export function AppProviders(props: {
   const [queryClient] = useState(() => new QueryClient());
 
   return (
+    // <ErudaProvider>
     <WagmiProvider config={config} initialState={props.initialState}>
       <QueryClientProvider client={queryClient}>
-        <OnchainKitProvider
+        <MiniKitProvider>
+          {/* <OnchainKitProvider
           apiKey={process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY}
           chain={base}
-        >
+
+        > */}
           {props.children}
-        </OnchainKitProvider>
+        </MiniKitProvider>
+        {/* </OnchainKitProvider> */}
       </QueryClientProvider>
     </WagmiProvider>
+    // </ErudaProvider>
   );
 }
 
