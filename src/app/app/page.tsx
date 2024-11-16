@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -64,6 +63,7 @@ export default function HomePage() {
         <Button
           className=""
           variant="secondary"
+          disabled={true}
           onClick={() =>
             router.push(`${window.origin}/app/world-merchant/1-verify-world`)
           }
@@ -71,41 +71,6 @@ export default function HomePage() {
           I am a shop owner
         </Button>
       </motion.div>
-
-      {/* <div className="">
-        <h3>TESTS</h3>
-        <div>Minikit - {String(isMiniKitSuccess)}</div>
-        <Link
-          className="inline-flex h-10 items-center justify-center gap-2 whitespace-nowrap rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
-          href="/hardware"
-        >
-          Hardware page
-        </Link>
-
-        <Button
-          className="inline-flex h-10 items-center justify-center gap-2 whitespace-nowrap rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
-          onClick={() => window.open("https://www.example.com", "_system")}
-        >
-          Deep link button
-        </Button>
-      </div> */}
-      {/* <Button
-        className="inline-flex h-10 items-center justify-center gap-2 whitespace-nowrap rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
-        onClick={() => window.open("https://www.example.com", "_system")}
-      >
-        Deep link button
-      </Button>
-      <Button
-        className="inline-flex h-10 items-center justify-center gap-2 whitespace-nowrap rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
-        onClick={() =>
-          window.open(
-            `https://redirect-utapia-world.vercel.app/redirect?redirect=${encodeURIComponent(window.origin + `/app/world-user/2-verify-nfc`)}`,
-            "_system",
-          )
-        }
-      >
-        Deep link button 2
-      </Button> */}
     </motion.div>
   );
 }

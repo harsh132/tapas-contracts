@@ -101,7 +101,7 @@ export default function MerchantPayment() {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={handleBack}
+                onClick={() => router.back()}
                 className=""
               >
                 <ArrowLeft className="h-6 w-6" />

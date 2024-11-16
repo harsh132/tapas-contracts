@@ -21,7 +21,9 @@ const AddWorldFunds = () => {
 
   const { mutate, data, isPending } = useMutation({
     mutationKey: ["pay crypto world"],
-    mutationFn: async () => {},
+    mutationFn: async () => {
+      return;
+    },
   });
 
   const router = useRouter();
