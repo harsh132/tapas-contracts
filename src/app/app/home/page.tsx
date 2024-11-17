@@ -61,9 +61,9 @@ const HomePage = () => {
         },
       });
 
-      const data = (await res.json()) as string;
+      const data = (await res.json()) as { status: string; account: string };
 
-      return data;
+      return data.account;
     },
   });
   useEffect(() => {
