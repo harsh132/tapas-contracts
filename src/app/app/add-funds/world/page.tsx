@@ -19,7 +19,7 @@ import { numpadButtons } from "~/lib/constants";
 const AddWorldFunds = () => {
   const utapiaAddress = useUtapiaStore((s) => s.utapiaAddress);
 
-  const { mutate, data, isPending } = useMutation({
+  const { mutate, data, isPending, error } = useMutation({
     mutationKey: ["pay crypto world"],
     mutationFn: async () => {
       if (!utapiaAddress) return;
@@ -142,6 +142,8 @@ const AddWorldFunds = () => {
           Add funds
         </Button>
       </div>
+
+      <div className="mt-16">{error ? JSON.stringify(error) : ""}</div>
     </div>
   );
 };
