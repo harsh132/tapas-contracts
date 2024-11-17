@@ -131,6 +131,8 @@ const VerifyNFC = () => {
         )}
       </motion.div>
 
+      {nfcError ? JSON.stringify(nfcError.message) : ""}
+
       {/* <Button
         onClick={() => {
           window.open(
