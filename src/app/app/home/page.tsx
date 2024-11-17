@@ -51,10 +51,6 @@ const HomePage = () => {
   const { data: utapiaid } = useQuery({
     queryKey: ["owner utapia id"],
     queryFn: async () => {
-      await new Promise((resolve) => {
-        setTimeout(() => resolve(true), 3000);
-      });
-
       const res = await fetch("/api/get-scw-by-owner", {
         body: JSON.stringify({
           owner: ownerAddress,
@@ -75,36 +71,38 @@ const HomePage = () => {
   const { data: transactions } = useQuery({
     queryKey: ["activity"],
     queryFn: async () => {
-      await new Promise((resolve) => {
-        setTimeout(() => resolve(true), 3000);
+      const res = await fetch("/api/transactions", {
+        method: "POST",
+        body: JSON.stringify({
+          owner: ownerAddress,
+        }),
+      });
+      const records = (await res.json()).result as {
+        id: number;
+        timestamp: string;
+        sender: string;
+        signer: string;
+        amount: string;
+        senderChain: string;
+        senderTxHash: string;
+        receiver: string;
+        receiverChain: string;
+        receiverTxHash: string;
+        amountUSD: string;
+      }[];
+
+      const t2 = records.map((record) => {
+        return {
+          id: record.id,
+          type: record.sender === ownerAddress ? "sent" : "received",
+          amount: parseFloat(record.amountUSD),
+          from: record.sender,
+          to: record.receiver,
+          date: new Date(record.timestamp).toLocaleDateString(),
+        }
       });
 
-      const transactions = [
-        {
-          id: 1,
-          type: "received",
-          amount: 25.0,
-          from: "Alice",
-          date: "2024-11-16",
-        },
-        { id: 2, type: "sent", amount: 15.5, to: "Bob", date: "2024-11-15" },
-        {
-          id: 3,
-          type: "received",
-          amount: 50.0,
-          from: "Charlie",
-          date: "2024-11-14",
-        },
-        {
-          id: 4,
-          type: "sent",
-          amount: 10.0,
-          to: "David",
-          date: "2024-11-13",
-        },
-      ];
-
-      return transactions;
+      return t2;
     },
   });
 
@@ -226,62 +224,62 @@ const HomePage = () => {
 
         {transactions
           ? transactions?.map((transaction) => (
-              <div
-                key={transaction.id}
-                className="flex items-center justify-between border-b py-3 last:border-b-0"
-              >
-                <div className="flex items-center gap-3">
-                  <div
-                    className={`rounded-full p-2 ${transaction.type === "received" ? "bg-green-100" : "bg-red-100"}`}
-                  >
-                    {transaction.type === "received" ? (
-                      <ArrowDown className="h-5 w-5 text-green-600" />
-                    ) : (
-                      <ArrowUp className="h-5 w-5 text-red-600" />
-                    )}
-                  </div>
-                  <div>
-                    <p className="font-medium">
-                      {transaction.type === "received"
-                        ? `Received from ${transaction.from}`
-                        : `Sent to ${transaction.to}`}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      {transaction.date}
-                    </p>
-                  </div>
-                </div>
-                <p
-                  className={`font-bold ${transaction.type === "received" ? "text-green-600" : "text-red-600"}`}
+            <div
+              key={transaction.id}
+              className="flex items-center justify-between border-b py-3 last:border-b-0"
+            >
+              <div className="flex items-center gap-3">
+                <div
+                  className={`rounded-full p-2 ${transaction.type === "received" ? "bg-green-100" : "bg-red-100"}`}
                 >
-                  {transaction.type === "received" ? "+" : "-"}$
-                  {transaction.amount.toFixed(2)}
-                </p>
-              </div>
-            ))
-          : Array.from({ length: 5 }).map((_, i) => (
-              <div
-                className="flex items-center justify-between border-b py-3 last:border-b-0"
-                key={i}
-              >
-                <div className="flex items-center gap-3">
-                  <div className={`rounded-full bg-accent p-2`}>
-                    <ArrowUpDown className="h-5 w-5 text-accent" />
-                  </div>
-                  <div>
-                    <p className="bg-accent font-medium text-transparent">
-                      ..............................
-                    </p>
-                    <p className="bg-accent text-sm text-transparent">
-                      ................... ..........
-                    </p>
-                  </div>
+                  {transaction.type === "received" ? (
+                    <ArrowDown className="h-5 w-5 text-green-600" />
+                  ) : (
+                    <ArrowUp className="h-5 w-5 text-red-600" />
+                  )}
                 </div>
-                <p className={`bg-accent font-bold text-transparent`}>
-                  ...........................
-                </p>
+                <div>
+                  <p className="font-medium">
+                    {transaction.type === "received"
+                      ? `Received from ${transaction.from}`
+                      : `Sent to ${transaction.to}`}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    {transaction.date}
+                  </p>
+                </div>
               </div>
-            ))}
+              <p
+                className={`font-bold ${transaction.type === "received" ? "text-green-600" : "text-red-600"}`}
+              >
+                {transaction.type === "received" ? "+" : "-"}$
+                {transaction.amount.toFixed(2)}
+              </p>
+            </div>
+          ))
+          : Array.from({ length: 5 }).map((_, i) => (
+            <div
+              className="flex items-center justify-between border-b py-3 last:border-b-0"
+              key={i}
+            >
+              <div className="flex items-center gap-3">
+                <div className={`rounded-full bg-accent p-2`}>
+                  <ArrowUpDown className="h-5 w-5 text-accent" />
+                </div>
+                <div>
+                  <p className="bg-accent font-medium text-transparent">
+                    ..............................
+                  </p>
+                  <p className="bg-accent text-sm text-transparent">
+                    ................... ..........
+                  </p>
+                </div>
+              </div>
+              <p className={`bg-accent font-bold text-transparent`}>
+                ...........................
+              </p>
+            </div>
+          ))}
       </div>
 
       <div className="sticky bottom-4 left-0 right-0 mt-auto grid grid-cols-2 gap-2">

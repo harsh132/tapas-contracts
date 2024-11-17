@@ -22,15 +22,16 @@ model Accounts {
 
 model Transaction {
     id              Int      @id @default(autoincrement())
-    chain           String
     sender          String
+    senderChain     String
+    senderTxHash    String
     receiver        String
+    receiverChain   String
+    receiverTxHash  String
     amount          String
     amountUSD       String
-    senderTxHash    String
-    receiverTxHash  String
     signer          String
     timestamp       String
 
-    @@index([sender, receiver])
+    @@index([sender])
 }
