@@ -61,9 +61,12 @@ const HomePage = () => {
         },
       });
 
-      const data = (await res.json()) as { status: string; account: string };
+      const data = await res.json();
 
-      return data.account;
+      console.log(data);
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
+      return data.account.smartAccount as string;
     },
   });
   useEffect(() => {
