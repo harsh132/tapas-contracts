@@ -10,7 +10,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useEnsName } from "wagmi";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent } from "~/components/ui/card";
@@ -28,6 +28,7 @@ const HomePage = () => {
   const mode = useUtapiaStore((s) => s.mode);
   const ownerAddress = useUtapiaStore((s) => s.ownerAddress);
   const utapiaAddress = useUtapiaStore((s) => s.utapiaAddress);
+  const setUtapiaAddress = useUtapiaStore((s) => s.setUtapiaAddress);
   const reset = useUtapiaStore((s) => s.reset);
   const { data: ensName } = useEnsName({
     address: ownerAddress as `0x`,
@@ -46,6 +47,30 @@ const HomePage = () => {
 
     return bal;
   }, [chainBalances]);
+
+  const { data: utapiaid } = useQuery({
+    queryKey: ["owner utapia id"],
+    queryFn: async () => {
+      await new Promise((resolve) => {
+        setTimeout(() => resolve(true), 3000);
+      });
+
+      const res = await fetch("/api/get-scw-by-owner", {
+        body: JSON.stringify({
+          owner: ownerAddress,
+        }),
+      });
+
+      const data = (await res.json()) as string;
+
+      return data;
+    },
+  });
+  useEffect(() => {
+    if (utapiaid) {
+      setUtapiaAddress(utapiaid);
+    }
+  }, [utapiaid, setUtapiaAddress]);
 
   const { data: transactions } = useQuery({
     queryKey: ["activity"],
@@ -70,7 +95,13 @@ const HomePage = () => {
           from: "Charlie",
           date: "2024-11-14",
         },
-        { id: 4, type: "sent", amount: 10.0, to: "David", date: "2024-11-13" },
+        {
+          id: 4,
+          type: "sent",
+          amount: 10.0,
+          to: "David",
+          date: "2024-11-13",
+        },
       ];
 
       return transactions;
