@@ -1,4 +1,5 @@
 "use client";
+
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { type ReactNode, useState } from "react";
 import { type State, WagmiProvider } from "wagmi";
@@ -7,6 +8,7 @@ import MiniKitProvider from "./minikit-provider";
 import { base } from "viem/chains";
 import { OnchainKitProvider } from "@coinbase/onchainkit";
 import { env } from "~/env";
+import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 
 export function Providers(props: {
   children: ReactNode;
@@ -23,7 +25,9 @@ export function Providers(props: {
           projectId={env.NEXT_PUBLIC_CDP_PROJECT_ID}
           chain={base}
         >
-          <MiniKitProvider>{props.children}</MiniKitProvider>
+          <RainbowKitProvider modalSize="compact">
+            <MiniKitProvider>{props.children}</MiniKitProvider>
+          </RainbowKitProvider>
         </OnchainKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
