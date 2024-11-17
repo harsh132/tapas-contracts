@@ -1,14 +1,21 @@
 import { coinbaseWallet } from "wagmi/connectors";
 import { http, createConfig, createStorage, cookieStorage } from "wagmi";
-import { base, celo, mainnet, worldchain } from "wagmi/chains";
+import {
+  base,
+  baseSepolia,
+  celo,
+  mainnet,
+  worldchain,
+  worldchainSepolia,
+} from "wagmi/chains";
 
 export const wagmiconfig = createConfig({
-  chains: [mainnet, base, celo, worldchain],
+  chains: [base, worldchain, baseSepolia, worldchainSepolia],
   transports: {
-    [mainnet.id]: http(),
     [worldchain.id]: http(),
     [base.id]: http(),
-    [celo.id]: http(),
+    [baseSepolia.id]: http(),
+    [worldchainSepolia.id]: http(),
   },
 });
 
