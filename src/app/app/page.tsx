@@ -92,9 +92,7 @@ export default function HomePage() {
 
         <Button
           className="h-24"
-          onClick={() =>
-            router.push(`${window.origin}/app/world-user/1-verify-world`)
-          }
+          onClick={() => router.push(`${window.origin}/app/world-user/1`)}
         >
           I want to <b>Pay</b>
         </Button>
@@ -103,9 +101,7 @@ export default function HomePage() {
           className=""
           variant="secondary"
           disabled={true}
-          onClick={() =>
-            router.push(`${window.origin}/app/world-merchant/1-verify-world`)
-          }
+          onClick={() => router.push(`${window.origin}/app/world-merchant/1`)}
         >
           I am a shop owner
         </Button>
