@@ -122,7 +122,7 @@ export const areAddressesEqual = (
  * @returns The shortened address.
  */
 export const shortenAddress = (address: string | undefined, chars = 4) =>
-  address ? `${address.slice(0, chars + 2)}...${address.slice(-chars)}` : "";
+  address ? `${address?.slice(0, chars + 2)}...${address?.slice(-chars)}` : "";
 
 export const isBase58 = (str: string) => {
   const base58Regex = /^[1-9A-HJ-NP-Za-km-z]+$/;
