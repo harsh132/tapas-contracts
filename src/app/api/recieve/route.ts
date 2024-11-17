@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
+import { privateKeyToAccount } from "viem/accounts";
 import { hashTypedData } from "viem";
 
 type Params = {
@@ -7,19 +8,19 @@ type Params = {
   receiver: `0x${string}`;
   token: `0x${string}`;
   usdAmount: string;
-  sender: `0x${string}`;
-};
+  signer: `0x${string}`;
+}
 
 export async function POST(req: NextRequest) {
   const params = (await req.json()) as Params;
-
+  const adminAccount = privateKeyToAccount(process.env.ADMIN_PRIVATE_KEY as `0x${string}`);
   const db = new PrismaClient();
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
   const record = await db.accounts.findFirst({
     where: {
-      signer: params.sender,
-    },
+      signer: params.signer
+    }
   });
 
   // All properties on a domain are optional
@@ -40,16 +41,20 @@ export async function POST(req: NextRequest) {
     ],
   } as const;
 
+  const amount = BigInt(params.usdAmount) * BigInt(10 ** 18);
+
   const hash = hashTypedData({
     domain: domain,
     types: types,
     primaryType: "withdraw",
     message: {
-      to: params.receiver,
+      to: adminAccount.address,
       token: params.token,
-      amount: BigInt(params.usdAmount),
-    },
+      amount: amount
+    }
   });
 
-  return NextResponse.json({ status: "ok", hash });
+  const res = { ...params, hash, amount: amount.toString(), sender: record?.smartAccount };
+
+  return NextResponse.json({ status: "ok", result: res });
 }
