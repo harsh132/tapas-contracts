@@ -4,21 +4,17 @@ import { useMutation } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { useAccount } from "wagmi";
 import { Button } from "~/components/ui/button";
+import { FundButton, getOnrampBuyUrl } from "@coinbase/onchainkit/fund";
 
 import { useUtapiaStore } from "~/components/utapia-provider";
+import { env } from "~/env";
 import { numpadButtons } from "~/lib/constants";
 
 const AddWorldFunds = () => {
   const utapiaAddress = useUtapiaStore((s) => s.utapiaAddress);
-
-  const { mutate, data, isPending } = useMutation({
-    mutationKey: ["pay crypto world"],
-    mutationFn: async () => {
-      return;
-    },
-  });
 
   const router = useRouter();
 
@@ -40,6 +36,18 @@ const AddWorldFunds = () => {
   };
 
   const formattedAmount = amount || "0.00";
+
+  const onrampBuyUrl = useMemo(
+    () =>
+      getOnrampBuyUrl({
+        projectId: env.NEXT_PUBLIC_CDP_PROJECT_ID,
+        addresses: { [utapiaAddress ?? ""]: ["base"] },
+        assets: ["USDC"],
+        presetFiatAmount: Number(amount),
+        fiatCurrency: "USD",
+      }),
+    [amount, utapiaAddress],
+  );
 
   return (
     <div className="relative flex min-h-screen flex-col">
@@ -89,13 +97,15 @@ const AddWorldFunds = () => {
           ))}
         </div>
 
-        <Button
+        {/* <Button
           className="h-16 w-full text-xl"
           onClick={() => mutate()}
           disabled={!amount || parseFloat(amount) === 0}
         >
           Add funds
-        </Button>
+        </Button> */}
+
+        <FundButton fundingUrl={onrampBuyUrl} />
       </div>
     </div>
   );

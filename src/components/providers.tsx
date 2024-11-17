@@ -6,6 +6,7 @@ import { getConfig } from "~/lib/constants/wagmiConfig";
 import MiniKitProvider from "./minikit-provider";
 import { base } from "viem/chains";
 import { OnchainKitProvider } from "@coinbase/onchainkit";
+import { env } from "~/env";
 
 export function Providers(props: {
   children: ReactNode;
@@ -15,18 +16,17 @@ export function Providers(props: {
   const [queryClient] = useState(() => new QueryClient());
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <WagmiProvider config={config} initialState={props.initialState}>
-        <MiniKitProvider>
-          <OnchainKitProvider
-            apiKey={process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY}
-            chain={base}
-          >
-            {props.children}
-          </OnchainKitProvider>
-        </MiniKitProvider>
-      </WagmiProvider>
-    </QueryClientProvider>
+    <WagmiProvider config={config} initialState={props.initialState}>
+      <QueryClientProvider client={queryClient}>
+        <OnchainKitProvider
+          apiKey={process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY}
+          projectId={env.NEXT_PUBLIC_CDP_PROJECT_ID}
+          chain={base}
+        >
+          <MiniKitProvider>{props.children}</MiniKitProvider>
+        </OnchainKitProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
   );
 }
 
