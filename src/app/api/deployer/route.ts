@@ -56,9 +56,9 @@ export async function POST(req: NextRequest) {
       chain: params.chain,
       smartAccount: account,
       owner: params.owner,
-      signer: signer
-    }
-  })
+      signer: signer,
+    };
+  });
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
   const acc = await db2.accounts.create({
