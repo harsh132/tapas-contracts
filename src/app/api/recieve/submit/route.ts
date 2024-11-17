@@ -44,13 +44,6 @@ export async function POST(req: NextRequest) {
     address: record?.smartAccount as `0x${string}`,
     abi: SmartAccountABI,
   });
-
-  const tx = await smartAccount.write.withdrawWithSig([
-    params.receiver,
-    params.token,
-    BigInt(params.usdAmount),
-    params.signature,
-  ]);
   const erc20 = getContract({
     client,
     address: process.env.NEXT_PUBLIC_USDC_ADDRESS as `0x${string}`,
