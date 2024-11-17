@@ -18,7 +18,7 @@ import "account-abstraction/samples/callback/TokenCallbackHandler.sol";
 contract SmartAccount is BaseAccount, TokenCallbackHandler, EIP712Upgradeable, UUPSUpgradeable {
   using SafeERC20 for IERC20;
   address public owner;
-  address private _factory;
+  address private immutable _factory;
 
   mapping(address => bool) private signers;
   address[] public signersList;
@@ -58,10 +58,6 @@ contract SmartAccount is BaseAccount, TokenCallbackHandler, EIP712Upgradeable, U
 
   function _onlyFactory() internal view {
     require(msg.sender == _factory, "only factory");
-  }
-
-  function _onlyTapas() internal view {
-    require(msg.sender == address(entryPoint()), "only Tapas");
   }
 
   /**
