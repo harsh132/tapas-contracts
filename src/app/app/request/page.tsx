@@ -52,6 +52,7 @@ export default function MerchantPayment() {
     mutate,
     isPending,
     data: completedTxHash,
+    error,
   } = useMutation({
     mutationKey: ["tap nfc"],
     mutationFn: async () => {
@@ -212,6 +213,7 @@ export default function MerchantPayment() {
           </>
         )}
       </div>
+      <div className="mt-32">{error ? JSON.stringify(error) : null}</div>
     </div>
   );
 }
