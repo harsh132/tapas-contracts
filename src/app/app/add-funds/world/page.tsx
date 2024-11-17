@@ -22,7 +22,7 @@ const AddWorldFunds = () => {
   const { mutate, data, isPending, error } = useMutation({
     mutationKey: ["pay crypto world"],
     mutationFn: async () => {
-      if (!utapiaAddress) return;
+      if (!utapiaAddress) throw new Error("No utapia address!");
 
       const res = await fetch("/api/initiate-payment", {
         method: "POST",
