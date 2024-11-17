@@ -1,80 +1,40 @@
 "use client";
-import { useMutation } from "@tanstack/react-query";
-import { MiniKit } from "@worldcoin/minikit-js";
+import {
+  Address,
+  Avatar,
+  EthBalance,
+  Identity,
+  Name,
+} from "@coinbase/onchainkit/identity";
+import {
+  ConnectWallet,
+  Wallet,
+  WalletDropdown,
+  WalletDropdownDisconnect,
+  WalletDropdownLink,
+} from "@coinbase/onchainkit/wallet";
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
-import { useLocalStorage } from "usehooks-ts";
-import { useMiniKitContext } from "~/components/minikit-provider";
+import { useRouter } from "next/navigation";
+import { CSSProperties, useEffect } from "react";
+import { useAccount } from "wagmi";
 import { Button } from "~/components/ui/button";
 import { useUtapiaStore } from "~/components/utapia-provider";
 import { appComponentVariants, pageVariants } from "../../motion-pages";
-import { CSSProperties } from "react";
 
 const VerifyWorld = () => {
-  const [_, setTapInProgress] = useLocalStorage("progress", false);
-  const { isMiniKitSuccess } = useMiniKitContext();
-
   const ownerAddress = useUtapiaStore((s) => s.ownerAddress);
   const setOwnerAddress = useUtapiaStore((s) => s.setOwnerAddress);
 
-  const {
-    mutate: signInWithWorld,
-    isPending,
-    error,
-    data: signInMutationData,
-  } = useMutation({
-    mutationKey: ["sign in with world"],
-    mutationFn: async () => {
-      if (window && isMiniKitSuccess && !MiniKit?.isInstalled()) {
-        window?.alert("Minikit not installed");
-        return false;
-      }
+  const router = useRouter();
 
-      const res = await fetch(`/api/nonce`);
-      const { nonce } = await res.json();
+  const { address } = useAccount();
 
-      const { commandPayload: generateMessageResult, finalPayload } =
-        await MiniKit.commandsAsync.walletAuth({
-          nonce: nonce,
-          requestId: "0", // Optional
-          expirationTime: new Date(
-            new Date().getTime() + 7 * 24 * 60 * 60 * 1000,
-          ),
-          notBefore: new Date(new Date().getTime() - 24 * 60 * 60 * 1000),
-          statement: "Connect my world id with Utapia",
-        });
-
-      if (finalPayload.status === "error") {
-        return false;
-      } else {
-        const response = await fetch("/api/complete-siwe", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            payload: finalPayload,
-            nonce,
-          }),
-        });
-
-        const data = (await response.json()) as {
-          status: string;
-          isValid: boolean;
-          message: string;
-        };
-
-        console.log(data);
-
-        if (data.status === "success") {
-          const walletAddress = MiniKit.walletAddress;
-          setOwnerAddress(walletAddress!);
-
-          return walletAddress;
-        }
-      }
-    },
-  });
+  useEffect(() => {
+    if (address) {
+      setOwnerAddress(address);
+    }
+  }, [address, setOwnerAddress]);
 
   return (
     <motion.div
@@ -84,11 +44,11 @@ const VerifyWorld = () => {
     >
       <motion.div variants={appComponentVariants} className="header">
         <h1 className="utapia-gradient-text pt-16 text-center text-4xl font-bold">
-          Verify your world ID
+          Connect your wallet
         </h1>
 
         <p className="mb-12 mt-8 text-center">
-          Utapia is hungry for your world id
+          Utapia is hungry for your wallet
         </p>
 
         <div className="flex w-full justify-center">
@@ -107,33 +67,49 @@ const VerifyWorld = () => {
 
         {!!ownerAddress && (
           <div className="mt-16 flex w-full justify-center gap-4 text-xl text-green-500">
-            Verified! <Check />
+            Connected! <Check />
           </div>
         )}
       </motion.div>
 
       <motion.div
         variants={appComponentVariants}
-        className="mb-4 mt-auto flex h-24 w-full flex-col gap-4 text-center"
+        className="mb-4 mt-auto flex w-full flex-col gap-4 text-center"
       >
-        {signInMutationData ? (
+        <div className="flex justify-center">
+          <Wallet className="w-full">
+            <ConnectWallet withWalletAggregator className="w-full">
+              <Avatar className="h-6 w-6" />
+              <Name />
+            </ConnectWallet>
+            <WalletDropdown>
+              <Identity className="px-4 pb-2 pt-3" hasCopyAddressOnClick>
+                <Avatar />
+                <Name />
+                <Address />
+                <EthBalance />
+              </Identity>
+              <WalletDropdownLink
+                icon="wallet"
+                href="https://keys.coinbase.com"
+              >
+                Wallet
+              </WalletDropdownLink>
+              <WalletDropdownDisconnect />
+            </WalletDropdown>
+          </Wallet>
+        </div>
+
+        {address ? (
           <Button
             onClick={() => {
-              setTapInProgress(true);
-              window.open(
-                `https://redirect-utapia-world.vercel.app/redirect?redirect=${encodeURIComponent(window.origin + `/app/world-user/2?ownerAddr=${ownerAddress}`)}`,
-                "_system",
-              );
+              router.push("/app/ext-user/2");
             }}
             className="utapia-gradient h-24"
           >
-            Connect Your Band
+            Next (1/2)
           </Button>
-        ) : (
-          <Button className="h-24" onClick={() => signInWithWorld()}>
-            {isPending ? "Verifying" : "Verify World ID"}
-          </Button>
-        )}
+        ) : null}
       </motion.div>
     </motion.div>
   );

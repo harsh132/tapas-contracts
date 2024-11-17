@@ -134,19 +134,6 @@ const VerifyNFC = () => {
           </Button>
         )}
       </motion.div>
-
-      {nfcError ? JSON.stringify(nfcError.message) : ""}
-
-      {/* <Button
-        onClick={() => {
-          window.open(
-            "https://worldcoin.org/mini-app?app_id=app_staging_a9c5694d434b72499697d674ca67f950",
-          );
-        }}
-        variant="destructive"
-      >
-        OVERRIDE
-      </Button> */}
     </motion.div>
   );
 };

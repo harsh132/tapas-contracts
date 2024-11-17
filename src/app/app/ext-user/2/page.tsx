@@ -1,19 +1,21 @@
 "use client";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { CSSProperties, useEffect } from "react";
 import * as halo from "src/lib/halo";
 import { useLocalStorage } from "usehooks-ts";
-import * as viem from "viem";
-import { useUtapiaStore } from "~/components/utapia-provider";
 import { Button } from "~/components/ui/button";
+import { useUtapiaStore } from "~/components/utapia-provider";
 import { appComponentVariants, pageVariants } from "../../motion-pages";
 
 const VerifyNFC = () => {
   const utapiaAddress = useUtapiaStore((state) => state.utapiaAddress);
   const router = useRouter();
   const [tapInProgress, setTapInProgress] = useLocalStorage("progress", false);
+
+  const searchParams = useSearchParams();
+  const ownerAddr = searchParams.get("owner");
 
   useEffect(() => {
     if (utapiaAddress) {
@@ -38,23 +40,25 @@ const VerifyNFC = () => {
     mutate,
   } = useMutation({
     mutationKey: ["tap nfc"],
-    mutationFn: async function testHalo() {
-      const digest =
-        "51605c863fc00650aa9965d4bd8b2838a9ff116fe6ae680da18d869cf7281f29";
+    mutationFn: async () => {
+      const nfcAddress = await halo.getKey();
+      if (!nfcAddress) {
+        throw new Error("Could not scan the NFC");
+      }
 
-      const res = await halo.signDigest(digest).then(async (response) => {
-        return viem
-          .recoverAddress({
-            hash: "0x51605c863fc00650aa9965d4bd8b2838a9ff116fe6ae680da18d869cf7281f29",
-            signature: response.signature.ether,
-          })
-          .then((address) => {
-            const log = JSON.stringify({ recoverdAddress: address }, null, 2);
-            return log;
-          });
+      await fetch("/api/deployer", {
+        body: JSON.stringify({
+          chain: 4801,
+          owner: ownerAddr,
+          signers: [nfcAddress],
+        }),
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
 
-      return res;
+      return true;
     },
   });
 
@@ -130,17 +134,6 @@ const VerifyNFC = () => {
           </Button>
         )}
       </motion.div>
-
-      {/* <Button
-        onClick={() => {
-          window.open(
-            "https://worldcoin.org/mini-app?app_id=app_staging_a9c5694d434b72499697d674ca67f950",
-          );
-        }}
-        variant="destructive"
-      >
-        OVERRIDE
-      </Button> */}
     </motion.div>
   );
 };

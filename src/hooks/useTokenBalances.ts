@@ -10,7 +10,7 @@ import useTokenBalanceStore from "./useTokenBalanceStore";
 const useTokenBalances = () => {
   const mode = useUtapiaStore((s) => s.mode);
   const utapiaAddress = useUtapiaStore((s) => s.utapiaAddress);
-  const wagmiAddress = useAccount();
+  const { address: wagmiAddress } = useAccount();
   const address = (
     mode === "world" ? utapiaAddress : wagmiAddress
   ) as `0x${string}`;

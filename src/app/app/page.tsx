@@ -12,6 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 
 export default function HomePage() {
   const ownerAddress = useUtapiaStore((state) => state.ownerAddress);
+  const mode = useUtapiaStore((state) => state.mode);
   const utapiaAddress = useUtapiaStore((state) => state.utapiaAddress);
   const setUtapiaAddress = useUtapiaStore((state) => state.setUtapiaAddress);
   const router = useRouter();
@@ -92,7 +93,11 @@ export default function HomePage() {
 
         <Button
           className="h-24"
-          onClick={() => router.push(`${window.origin}/app/world-user/1`)}
+          onClick={() =>
+            mode === "world"
+              ? router.push(`${window.origin}/app/world-user/1`)
+              : router.push(`${window.origin}/app/ext-user/1`)
+          }
         >
           I want to <b>Pay</b>
         </Button>
