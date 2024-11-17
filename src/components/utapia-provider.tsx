@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import React from "react";
-import { combine, persist } from "zustand/middleware";
+import { combine, createJSONStorage, persist } from "zustand/middleware";
 
 export const useUtapiaStore = create(
   persist(
@@ -31,6 +31,12 @@ export const useUtapiaStore = create(
     ),
     {
       name: "utapia-storage",
+      storage: createJSONStorage(() => localStorage), // (optional) by default, 'localStorage' is used
+      partialize: (state) => ({
+        mode: state.mode,
+        utapiaAddress: state.utapiaAddress,
+        ownerAddress: state.ownerAddress,
+      }),
     },
   ),
 );
