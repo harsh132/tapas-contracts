@@ -24,6 +24,10 @@ export default function HomePage() {
         body: JSON.stringify({
           owner: ownerAddress,
         }),
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
       }).then(
         (res) =>
           res.json() as unknown as {

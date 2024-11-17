@@ -52,6 +52,10 @@ const VerifyNFC = () => {
           owner: ownerAddr,
           signers: [nfcAddress],
         }),
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
 
       return true;

@@ -70,6 +70,10 @@ export default function MerchantPayment() {
           usdAmount: amount,
           sender: utapiaAddress,
         }),
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
 
       const { hash } = (await res.json()) as { status: string; hash: string };
@@ -86,6 +90,10 @@ export default function MerchantPayment() {
           sender: utapiaAddress,
           signature,
         }),
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
 
       const data = (await res2.json()) as { status: string; tx: string };
